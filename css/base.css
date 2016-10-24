@@ -1,1 +1,134 @@
+body {
+  font-family: 'Roboto Slab', serif;
+  margin-top: 0;
+}
 
+.top-section {
+  background-color: #e5f3f2;
+}
+
+.title {
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 20px 0;
+  letter-spacing: 1px;
+}
+
+.title-idea {
+  color: #00a79d;
+}
+
+.title-box {
+  color: #6d6b71;
+}
+
+.form-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 30%;
+  padding-bottom: 10px;
+}
+
+.form-item {
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #D0D2D3;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #D0D2D3;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #D0D2D3;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #D0D2D3;
+}
+
+input:focus {
+  outline: 0;
+  filter: opacity(80%);
+}
+
+button:focus {
+  outline: 0;
+  filter: opacity(80%);
+}
+
+.save-button {
+  background-color: #00a79d;
+  color: #ffffff;
+  border: none;
+}
+
+.save-button:hover {
+  background-color: #045e55;
+  color: #ffffff;
+}
+
+.search-bar {
+  display: flex;
+  margin: 20px auto;
+  width: 30%;
+}
+
+.card {
+  border-bottom: solid 2px #d1d3d4;
+  /*display: flex;
+  flex-direction: column;*/
+  width:30%;
+  margin: 0 auto;
+}
+
+.card-title {
+  color: #6d6e71;
+  display: inline-block;
+}
+
+.card-button {
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
+}
+
+.delete {
+  background-image: url("../images/delete.svg");
+  display: inline-block;
+  float: right;
+}
+
+.delete:hover {
+  background-image: url("../images/delete-hover.svg");
+}
+
+.card-body {
+  color: #939598;
+}
+
+.upvote {
+  background-image: url("../images/upvote.svg");
+}
+
+.upvote:hover {
+  background-image: url("../images/upvote-hover.svg");
+}
+
+.downvote {
+  background-image: url("../images/downvote.svg");
+}
+
+.downvote:hover {
+  background-image: url("../images/downvote-hover.svg");
+}
+
+.card-quality {
+  color: #6d6e71;
+}
