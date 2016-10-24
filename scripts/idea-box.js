@@ -5,7 +5,7 @@ var bodyField = $('.body-field');
 var inputFields = $('.title-field, .body-field');
 var list = $('.idea-list');
 var saveButton = $('.save-button');
-var searchField = $('.search-bar')
+var searchField = $('.search-bar');
 
 titleField.focus();
 
@@ -15,4 +15,3 @@ function Idea() {
   this.body = body;
   this.quality = quality;
 }
-
