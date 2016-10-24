@@ -5,7 +5,7 @@ body {
 
 .top-section {
   background-color: #e5f3f2;
-}
+ }
 
 .title {
   margin: 0 auto;
@@ -149,8 +149,16 @@ button:focus {
 }
 
 @media screen and (max-width: 500px){
+  body {
+    display: block;
+  }
+
   .form-section {
     width: 90%;
+  }
+
+  .body-field {
+    height: 70px;
   }
 
   .search-bar {
