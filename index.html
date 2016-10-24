@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" href="./css/base.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
@@ -10,6 +10,30 @@
   </head>
 
   <body>
+    <section class="top-section">
+      <h1 class="title"><span class="title-idea">idea</span><span class="title-box">box</span></h1>
+      <section class="form-section">
+        <input class="text-input form-item" type="input" name="Title" value="" placeholder="Title">
+        <input class="text-input form-item" type="input" name="Body" value="" placeholder="Body">
+        <button class="save-button form-item" type="button" name="save-button" disabled>save</button>
+      </section>
+  </section>
+
+  <section class="bottom-section">
+    <input class="text-input search-bar" type="input" name="Search" value="" placeholder="Search">
+    <section class="idea-list">
+      <article class="card">
+        <h2 class="card-title">Example Idea 1</h2>
+        <input class="card-button delete" type="button" name="name" value="">
+        <p class="card-body">As a user types in the search box, the list of ideas should filter in real time to only display ideas whose title or body include the user’s text. The page should not reload.</p>
+        <input class="card-button upvote" type="button" name="name" value="">
+        <input class="card-button downvote" type="button" name="name" value="">
+        <div class="card-quality">quality: swill</div>
+
+      </article>
+    </section>
+  </section>
+
 
   </body>
 
