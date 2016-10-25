@@ -63,8 +63,16 @@ ideaList.on('click', '.delete', function () {
   $(this).parent().fadeOut('normal', function () {
     deleteCardData($(this).attr('id'));
     $(this).remove();
+    resetCounter();
   });
 });
+
+function resetCounter() {
+  if ($('.idea-list').children().length === 0) {
+    localStorage.setItem('count', 0);
+    count = 0;
+  }
+}
 
 ideaList.on('click', '.upvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
