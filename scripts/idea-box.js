@@ -50,9 +50,34 @@ ideaList.on('click', '.delete', function () {
 });
 
 ideaList.on('click', '.upvote', function () {
-  $(this).parent().
+  var qualityValue = $(this).parent().find('.quality-value').text();
+  var newQualityString= changeQuality(qualityValue, 'up');
+  $(this).parent().find('.quality-value').text(newQualityString);
+
 });
 
 ideaList.on('click', '.downvote', function () {
-  $(this).parent().
+  var qualityValue = $(this).parent().find('.quality-value').text();
+  var newQualityString = changeQuality(qualityValue, 'down');
+  $(this).parent().find('.quality-value').text(newQualityString);
+
 });
+
+function changeQuality(qualityString, direction) {
+  var qualityIndex = qualityArray.indexOf(qualityString);
+  var newQualityIndex = qualityIndex;
+
+  if (direction === 'up') {
+    if (qualityIndex !== 2) {
+      newQualityIndex = qualityIndex + 1;
+    }
+  } else {
+    if (qualityIndex !== 0) {
+      newQualityIndex = qualityIndex - 1;
+    }
+  }
+
+  return qualityArray[newQualityIndex];
+
+
+}
