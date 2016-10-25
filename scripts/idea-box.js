@@ -61,6 +61,7 @@ function clearInput() {
 
 ideaList.on('click', '.delete', function () {
   $(this).parent().fadeOut('normal', function () {
+    deleteCardData($(this).attr('id'));
     $(this).remove();
   });
 });
@@ -146,6 +147,11 @@ function saveCard(newCardData) {
   var key = 'card-' + newCardData.id;
   var value = JSON.stringify(newCardData);
   localStorage.setItem(key, value);
+}
+
+function deleteCardData(cardID) {
+  localStorage.removeItem(cardID);
+
 }
 
 // for (var i = 0; i < localStorage.length; i++) {
