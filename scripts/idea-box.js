@@ -8,8 +8,11 @@ var inputFields = $('.title-field, .body-field');
 var ideaList = $('.idea-list');
 var saveButton = $('.save-button');
 var searchField = $('.search-bar');
+var errorMsg = $('.error-msg');
+
 
 titleField.focus();
+saveButton.attr('disabled', true);
 
 function Idea() {
   this.id = id;
@@ -29,14 +32,14 @@ saveButton.on('click', function () {
 function addCardToList(title, body) {
   var quality = qualityArray[0];
   var newCard =
-    `<article class="card" id="card-${count}">
+    $(`<article class="card" id="card-${count}">
       <h2 class="card-title">${title}</h2>
       <input class="card-button delete" type="button" name="name" value="">
       <p class="card-body">${body}</p>
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
       <div class="card-quality">quality: <span class="quality-value">${quality}</span></div>
-    </article>`;
+    </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
 }
@@ -47,7 +50,9 @@ function clearInput() {
 }
 
 ideaList.on('click', '.delete', function () {
-  $(this).parent().remove();
+  $(this).parent().fadeOut('normal', function () {
+    $(this).remove();
+  });
 });
 
 ideaList.on('click', '.upvote', function () {
@@ -85,15 +90,8 @@ inputFields.on('blur keypress', function () {
 
   var titleString = $('.title-field').val();
   var bodyString = $('.body-field').val();
-  var titleEmpty = stringIsEmpty(titleString);
-  var bodyEmpty = stringIsEmpty(bodyString);
+  updateSaveButtonStatus(titleString, bodyString);
 
-  if (bodyEmpty || titleEmpty) {
-    saveButton.attr('disabled', true);
-  } else if (!bodyEmpty && !titleEmpty) {
-    //hideError();
-    saveButton.attr('disabled', false);
-  }
 });
 
 function stringIsEmpty(string) {
@@ -103,6 +101,33 @@ function stringIsEmpty(string) {
 // click the create-button when user hits enter key
 inputFields.keypress(function(event){
   if (event.which == 13) {
-    saveButton.click();
+    if (saveButton.attr('disabled')) {
+      displayError();
+    } else {
+      saveButton.click();
+    }
   }
 });
+
+
+function updateSaveButtonStatus(titleString, bodyString) {
+  var titleEmpty = stringIsEmpty(titleString);
+  var bodyEmpty = stringIsEmpty(bodyString);
+
+  if (bodyEmpty || titleEmpty) {
+    saveButton.attr('disabled', true);
+  } else if (!bodyEmpty && !titleEmpty) {
+    hideError();
+    saveButton.attr('disabled', false);
+  }
+}
+
+function displayError() {
+  errorMsg.css('opacity', '.75');
+  errorMsg.css('transition-duration', '.5s');
+};
+
+function hideError() {
+  errorMsg.css('opacity', '0');
+  errorMsg.css('transition-duration', '.5s');
+};
