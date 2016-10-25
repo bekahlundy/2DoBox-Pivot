@@ -33,25 +33,25 @@ saveButton.on('click', function () {
   var body = bodyField.val();
   var newCardData = new Card(count, title, body);
   saveCard(newCardData);
-  addCardToList(newCardData.id, newCardData.title, newCardData.body, 0);
+  addCardToList(newCardData);
   titleField.focus();
   clearInput();
 });
 
-function addCardToList(id, title, body, quality) {
-  var qualityString = qualityArray[quality];
+function addCardToList(newCardObject) {
+  var qualityString = qualityArray[newCardObject.quality];
   var newCard =
-    $(`<article class="card" id="card-${id}">
-      <h2 class="card-title">${title}</h2>
+    $(`<article class="card" id="card-${newCardObject.id}">
+      <h2 class="card-title" contentEditable="true">${newCardObject.title}</h2>
       <input class="card-button delete" type="button" name="name" value="">
-      <p class="card-body">${body}</p>
+      <p class="card-body" contentEditable="true">${newCardObject.body}</p>
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
       <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
-  localStorage.setItem('count',count);
+  localStorage.setItem('count', count);
 }
 
 function clearInput() {
@@ -88,6 +88,40 @@ ideaList.on('click', '.downvote', function () {
   $(this).parent().find('.quality-value').text(newQualityString);
   updateQualityData($(this).parent().attr('id'), newQualityString);
 
+});
+
+ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
+  if (event.which == 13 || event.type === 'focusout') {
+    event.preventDefault();
+    if ($(this).is('.card-title')) {
+      var newTitleText = $(this).text();
+      updateCardTitle($(this).parent().attr('id'), newTitleText);
+    } else if ($(this).is('.card-body')) {
+      var newBodyText = $(this).text();
+      updateCardBody($(this).parent().attr('id'), newBodyText);
+    }
+  }
+});
+
+function updateCardTitle(id, newTitleText) {
+  var savedCardString = localStorage.getItem(id);
+  var cardObject = JSON.parse(savedCardString);
+  cardObject.title = newTitleText;
+  saveCard(cardObject);
+}
+
+function updateCardBody(id, newBodyText) {
+  var savedCardString = localStorage.getItem(id);
+  var cardObject = JSON.parse(savedCardString);
+  cardObject.body = newBodyText;
+  saveCard(cardObject);
+}
+
+ideaList.on('keypress', '.card-body', function (event) {
+  if (event.which == 13) {
+    event.preventDefault();
+    $(this).text();
+  }
 });
 
 function updateQualityData(id, newQualityString) {
@@ -177,7 +211,7 @@ function getSavedCards() {
       if (key.substring(0, 5) == "card-") {
           var savedCardString = localStorage.getItem(key);
           var savedCard = JSON.parse(savedCardString);
-          addCardToList(savedCard.id, savedCard.title, savedCard.body, savedCard.quality);
+          addCardToList(savedCard);
       }
   }
 }
