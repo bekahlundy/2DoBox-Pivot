@@ -125,9 +125,44 @@ function updateSaveButtonStatus(titleString, bodyString) {
 function displayError() {
   errorMsg.css('opacity', '.75');
   errorMsg.css('transition-duration', '.5s');
-};
+}
 
 function hideError() {
   errorMsg.css('opacity', '0');
   errorMsg.css('transition-duration', '.5s');
-};
+}
+
+
+function saveTitleField(idea) {
+  if (localStorage) {
+    var key = 'titleField' + idea.id;
+    var item = JSON.stringify(titleField);
+    localStorage.setItem(key, item);
+  } else {
+    //display error message
+  }
+}
+
+//localStorage = funciton to test for localStorage availability
+
+
+for (var i = 0; i < localStorage.length; i++) {
+  console.log(localStorage.key(i));
+}
+
+function getTitleField() {
+    if (localStorage) {
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            if (key.substring(0, 4) == "idea") {
+                var item = localStorage.getItem(key);
+                var todoItem = JSON.parse(item);
+                todos.push(todoItem);
+            }
+        }
+        addTodosToPage();
+    }
+    else {
+        console.log("Error: you don't have localStorage!");
+    }
+}
