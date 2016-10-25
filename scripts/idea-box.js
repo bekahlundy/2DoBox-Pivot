@@ -79,6 +79,30 @@ function changeQuality(qualityString, direction) {
   }
 
   return qualityArray[newQualityIndex];
-
-
 }
+
+inputFields.on('blur keypress', function () {
+
+  var titleString = $('.title-field').val();
+  var bodyString = $('.body-field').val();
+  var titleEmpty = stringIsEmpty(titleString);
+  var bodyEmpty = stringIsEmpty(bodyString);
+
+  if (bodyEmpty || titleEmpty) {
+    saveButton.attr('disabled', true);
+  } else if (!bodyEmpty && !titleEmpty) {
+    //hideError();
+    saveButton.attr('disabled', false);
+  }
+});
+
+function stringIsEmpty(string) {
+  return string.length === 0 || (/^(\s)*$/g).test(string);
+}
+
+// click the create-button when user hits enter key
+inputFields.keypress(function(event){
+  if (event.which == 13) {
+    saveButton.click();
+  }
+});
