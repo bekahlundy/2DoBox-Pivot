@@ -29,7 +29,7 @@ saveButton.on('click', function () {
 function addCardToList(title, body) {
   var quality = qualityArray[0];
   var newCard =
-    `<article class="card">
+    `<article class="card" id="card-${count}">
       <h2 class="card-title">${title}</h2>
       <input class="card-button delete" type="button" name="name" value="">
       <p class="card-body">${body}</p>
@@ -38,6 +38,7 @@ function addCardToList(title, body) {
       <div class="card-quality">quality: <span class="quality-value">${quality}</span></div>
     </article>`;
   ideaList.prepend(newCard);
+  count++;
 }
 
 function clearInput() {
