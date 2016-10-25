@@ -1,4 +1,10 @@
-var count = 0;
+if(localStorage.getItem('count') === null) {
+  var count = 0;
+  localStorage.setItem('count', count);
+} else {
+  var count = localStorage.getItem('count');
+}
+
 
 var qualityArray = ['swill', 'plausible', 'genius'];
 
@@ -10,38 +16,42 @@ var saveButton = $('.save-button');
 var searchField = $('.search-bar');
 var errorMsg = $('.error-msg');
 
-
 titleField.focus();
 saveButton.attr('disabled', true);
 
-function Idea() {
-  this.id = id;
+getSavedCards();
+
+function Card(count, title, body) {
+  this.id = count;
   this.title = title;
   this.body = body;
-  this.quality = quality;
+  this.quality = 0;
 }
 
 saveButton.on('click', function () {
   var title = titleField.val();
   var body = bodyField.val();
-  addCardToList(title, body);
+  var newCardData = new Card(count, title, body);
+  saveCard(newCardData);
+  addCardToList(newCardData);
   titleField.focus();
   clearInput();
 });
 
-function addCardToList(title, body) {
-  var quality = qualityArray[0];
+function addCardToList(newCardObject) {
+  var qualityString = qualityArray[newCardObject.quality];
   var newCard =
-    $(`<article class="card" id="card-${count}">
-      <h2 class="card-title">${title}</h2>
+    $(`<article class="card" id="card-${newCardObject.id}">
+      <h2 class="card-title" contentEditable="true">${newCardObject.title}</h2>
       <input class="card-button delete" type="button" name="name" value="">
-      <p class="card-body">${body}</p>
+      <p class="card-body" contentEditable="true">${newCardObject.body}</p>
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
-      <div class="card-quality">quality: <span class="quality-value">${quality}</span></div>
+      <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
+  localStorage.setItem('count', count);
 }
 
 function clearInput() {
@@ -51,14 +61,24 @@ function clearInput() {
 
 ideaList.on('click', '.delete', function () {
   $(this).parent().fadeOut('normal', function () {
+    deleteCardData($(this).attr('id'));
     $(this).remove();
+    resetCounter();
   });
 });
+
+function resetCounter() {
+  if ($('.idea-list').children().length === 0) {
+    localStorage.setItem('count', 0);
+    count = 0;
+  }
+}
 
 ideaList.on('click', '.upvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
   var newQualityString= changeQuality(qualityValue, 'up');
   $(this).parent().find('.quality-value').text(newQualityString);
+  updateQualityData($(this).parent().attr('id'), newQualityString);
 
 });
 
@@ -66,8 +86,52 @@ ideaList.on('click', '.downvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
   var newQualityString = changeQuality(qualityValue, 'down');
   $(this).parent().find('.quality-value').text(newQualityString);
+  updateQualityData($(this).parent().attr('id'), newQualityString);
 
 });
+
+ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
+  if (event.which == 13 || event.type === 'focusout') {
+    event.preventDefault();
+    if ($(this).is('.card-title')) {
+      var newTitleText = $(this).text();
+      updateCardTitle($(this).parent().attr('id'), newTitleText);
+    } else if ($(this).is('.card-body')) {
+      var newBodyText = $(this).text();
+      updateCardBody($(this).parent().attr('id'), newBodyText);
+    }
+  }
+});
+
+function updateCardTitle(id, newTitleText) {
+  var savedCardString = localStorage.getItem(id);
+  var cardObject = JSON.parse(savedCardString);
+  cardObject.title = newTitleText;
+  saveCard(cardObject);
+}
+
+function updateCardBody(id, newBodyText) {
+  var savedCardString = localStorage.getItem(id);
+  var cardObject = JSON.parse(savedCardString);
+  cardObject.body = newBodyText;
+  saveCard(cardObject);
+}
+
+ideaList.on('keypress', '.card-body', function (event) {
+  if (event.which == 13) {
+    event.preventDefault();
+    $(this).text();
+  }
+});
+
+function updateQualityData(id, newQualityString) {
+  var savedCardString = localStorage.getItem(id);
+  var savedCard = JSON.parse(savedCardString);
+  savedCard.quality = qualityArray.indexOf(newQualityString);
+  saveCard(savedCard);
+
+}
+
 
 function changeQuality(qualityString, direction) {
   var qualityIndex = qualityArray.indexOf(qualityString);
@@ -109,7 +173,6 @@ inputFields.keypress(function(event){
   }
 });
 
-
 function updateSaveButtonStatus(titleString, bodyString) {
   var titleEmpty = stringIsEmpty(titleString);
   var bodyEmpty = stringIsEmpty(bodyString);
@@ -125,9 +188,30 @@ function updateSaveButtonStatus(titleString, bodyString) {
 function displayError() {
   errorMsg.css('opacity', '.75');
   errorMsg.css('transition-duration', '.5s');
-};
+}
 
 function hideError() {
   errorMsg.css('opacity', '0');
   errorMsg.css('transition-duration', '.5s');
-};
+}
+
+function saveCard(newCardData) {
+  var key = 'card-' + newCardData.id;
+  var value = JSON.stringify(newCardData);
+  localStorage.setItem(key, value);
+}
+
+function deleteCardData(cardID) {
+  localStorage.removeItem(cardID);
+}
+
+function getSavedCards() {
+  for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key.substring(0, 5) == "card-") {
+          var savedCardString = localStorage.getItem(key);
+          var savedCard = JSON.parse(savedCardString);
+          addCardToList(savedCard);
+      }
+  }
+}
