@@ -78,6 +78,7 @@ ideaList.on('click', '.upvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
   var newQualityString= changeQuality(qualityValue, 'up');
   $(this).parent().find('.quality-value').text(newQualityString);
+  updateQualityData($(this).parent().attr('id'), newQualityString);
 
 });
 
@@ -85,8 +86,18 @@ ideaList.on('click', '.downvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
   var newQualityString = changeQuality(qualityValue, 'down');
   $(this).parent().find('.quality-value').text(newQualityString);
+  updateQualityData($(this).parent().attr('id'), newQualityString);
 
 });
+
+function updateQualityData(id, newQualityString) {
+  var savedCardString = localStorage.getItem(id);
+  var savedCard = JSON.parse(savedCardString);
+  savedCard.quality = qualityArray.indexOf(newQualityString);
+  saveCard(savedCard);
+
+}
+
 
 function changeQuality(qualityString, direction) {
   var qualityIndex = qualityArray.indexOf(qualityString);
