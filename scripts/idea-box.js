@@ -1,4 +1,11 @@
-var count = 0;
+
+
+if(localStorage.getItem('count') === null) {
+  var count = 0;
+  localStorage.setItem('count', count);
+} else {
+  var count = localStorage.getItem('count');
+}
 
 var qualityArray = ['swill', 'plausible', 'genius'];
 
@@ -14,16 +21,18 @@ var errorMsg = $('.error-msg');
 titleField.focus();
 saveButton.attr('disabled', true);
 
-function Idea() {
-  this.id = id;
+function Card(count, title, body) {
+  this.id = count;
   this.title = title;
   this.body = body;
-  this.quality = quality;
+  this.quality = 0;
 }
 
 saveButton.on('click', function () {
   var title = titleField.val();
   var body = bodyField.val();
+  var newCardData = new Card(count, title, body);
+  saveCard(newCardData);
   addCardToList(title, body);
   titleField.focus();
   clearInput();
@@ -42,6 +51,7 @@ function addCardToList(title, body) {
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
+  localStorage.setItem('count',count);
 }
 
 function clearInput() {
@@ -132,37 +142,29 @@ function hideError() {
   errorMsg.css('transition-duration', '.5s');
 }
 
-
-function saveTitleField(idea) {
-  if (localStorage) {
-    var key = 'titleField' + idea.id;
-    var item = JSON.stringify(titleField);
-    localStorage.setItem(key, item);
-  } else {
-    //display error message
-  }
+function saveCard(newCardData) {
+  var key = 'card-' + newCardData.id;
+  var value = JSON.stringify(newCardData);
+  localStorage.setItem(key, value);
 }
 
-//localStorage = funciton to test for localStorage availability
-
-
-for (var i = 0; i < localStorage.length; i++) {
-  console.log(localStorage.key(i));
-}
-
-function getTitleField() {
-    if (localStorage) {
-        for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i);
-            if (key.substring(0, 4) == "idea") {
-                var item = localStorage.getItem(key);
-                var todoItem = JSON.parse(item);
-                todos.push(todoItem);
-            }
-        }
-        addTodosToPage();
-    }
-    else {
-        console.log("Error: you don't have localStorage!");
-    }
-}
+// for (var i = 0; i < localStorage.length; i++) {
+//   console.log(localStorage.key(i));
+// }
+//
+// function getTitleField() {
+//     if (localStorage) {
+//         for (var i = 0; i < localStorage.length; i++) {
+//             var key = localStorage.key(i);
+//             if (key.substring(0, 4) == "idea") {
+//                 var item = localStorage.getItem(key);
+//                 var todoItem = JSON.parse(item);
+//                 todos.push(todoItem);
+//             }
+//         }
+//         addTodosToPage();
+//     }
+//     else {
+//         console.log("Error: you don't have localStorage!");
+//     }
+// }
