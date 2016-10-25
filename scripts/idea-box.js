@@ -1,11 +1,10 @@
-
-
 if(localStorage.getItem('count') === null) {
   var count = 0;
   localStorage.setItem('count', count);
 } else {
   var count = localStorage.getItem('count');
 }
+
 
 var qualityArray = ['swill', 'plausible', 'genius'];
 
@@ -17,9 +16,10 @@ var saveButton = $('.save-button');
 var searchField = $('.search-bar');
 var errorMsg = $('.error-msg');
 
-
 titleField.focus();
 saveButton.attr('disabled', true);
+
+getSavedCards();
 
 function Card(count, title, body) {
   this.id = count;
@@ -33,21 +33,21 @@ saveButton.on('click', function () {
   var body = bodyField.val();
   var newCardData = new Card(count, title, body);
   saveCard(newCardData);
-  addCardToList(title, body);
+  addCardToList(newCardData.id, newCardData.title, newCardData.body, 0);
   titleField.focus();
   clearInput();
 });
 
-function addCardToList(title, body) {
-  var quality = qualityArray[0];
+function addCardToList(id, title, body, quality) {
+  var qualityString = qualityArray[quality];
   var newCard =
-    $(`<article class="card" id="card-${count}">
+    $(`<article class="card" id="card-${id}">
       <h2 class="card-title">${title}</h2>
       <input class="card-button delete" type="button" name="name" value="">
       <p class="card-body">${body}</p>
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
-      <div class="card-quality">quality: <span class="quality-value">${quality}</span></div>
+      <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
@@ -120,7 +120,6 @@ inputFields.keypress(function(event){
   }
 });
 
-
 function updateSaveButtonStatus(titleString, bodyString) {
   var titleEmpty = stringIsEmpty(titleString);
   var bodyEmpty = stringIsEmpty(bodyString);
@@ -151,26 +150,15 @@ function saveCard(newCardData) {
 
 function deleteCardData(cardID) {
   localStorage.removeItem(cardID);
-
 }
 
-// for (var i = 0; i < localStorage.length; i++) {
-//   console.log(localStorage.key(i));
-// }
-//
-// function getTitleField() {
-//     if (localStorage) {
-//         for (var i = 0; i < localStorage.length; i++) {
-//             var key = localStorage.key(i);
-//             if (key.substring(0, 4) == "idea") {
-//                 var item = localStorage.getItem(key);
-//                 var todoItem = JSON.parse(item);
-//                 todos.push(todoItem);
-//             }
-//         }
-//         addTodosToPage();
-//     }
-//     else {
-//         console.log("Error: you don't have localStorage!");
-//     }
-// }
+function getSavedCards() {
+  for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key.substring(0, 5) == "card-") {
+          var savedCardString = localStorage.getItem(key);
+          var savedCard = JSON.parse(savedCardString);
+          addCardToList(savedCard.id, savedCard.title, savedCard.body, savedCard.quality);
+      }
+  }
+}
