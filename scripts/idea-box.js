@@ -117,13 +117,6 @@ function updateCardBody(id, newBodyText) {
   saveCard(cardObject);
 }
 
-ideaList.on('keypress', '.card-body', function (event) {
-  if (event.which == 13) {
-    event.preventDefault();
-    $(this).text();
-  }
-});
-
 function updateQualityData(id, newQualityString) {
   var savedCardString = localStorage.getItem(id);
   var savedCard = JSON.parse(savedCardString);
