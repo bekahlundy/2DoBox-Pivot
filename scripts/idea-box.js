@@ -209,12 +209,14 @@ function getMatchedCards(searchText) {
     if (key.substring(0, 5) == "card-") {
       var savedCardObject = getOneSavedCard(key);
 
-      var bodyMatch = savedCardObject.body.search(searchText);
-      var titleMatch  = savedCardObject.title.search(searchText);
+      var searchQuery = new RegExp(searchText, 'i')
+
+      var bodyMatch = savedCardObject.body.search(searchQuery);
+      var titleMatch  = savedCardObject.title.search(searchQuery);
 
       var savedCardQualityIndex = savedCardObject.quality;
       var savedCardQualityString = qualityArray[savedCardQualityIndex];
-      var qualityMatch  = savedCardQualityString.search(searchText);
+      var qualityMatch  = savedCardQualityString.search(searchQuery);
 
       if (bodyMatch !== -1 || titleMatch !== -1 || qualityMatch !== -1) {
         addCardToList(savedCardObject);
