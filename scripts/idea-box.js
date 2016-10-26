@@ -227,6 +227,6 @@ function getSavedCards() {
       var savedCardString = localStorage.getItem(key);
       var savedCard = JSON.parse(savedCardString);
       addCardToList(savedCard);
-    }
+      }
   }
 }
