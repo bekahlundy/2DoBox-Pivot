@@ -5,7 +5,6 @@ if(localStorage.getItem('count') === null) {
   var count = localStorage.getItem('count');
 }
 
-
 var qualityArray = ['swill', 'plausible', 'genius'];
 
 var titleField = $('.title-field');
@@ -79,7 +78,6 @@ ideaList.on('click', '.upvote', function () {
   var newQualityString= changeQuality(qualityValue, 'up');
   $(this).parent().find('.quality-value').text(newQualityString);
   updateQualityData($(this).parent().attr('id'), newQualityString);
-
 });
 
 ideaList.on('click', '.downvote', function () {
@@ -87,7 +85,6 @@ ideaList.on('click', '.downvote', function () {
   var newQualityString = changeQuality(qualityValue, 'down');
   $(this).parent().find('.quality-value').text(newQualityString);
   updateQualityData($(this).parent().attr('id'), newQualityString);
-
 });
 
 searchField.on('keyup blur', function() {
@@ -171,11 +168,9 @@ function changeQuality(qualityString, direction) {
 }
 
 inputFields.on('blur keypress', function () {
-
   var titleString = $('.title-field').val();
   var bodyString = $('.body-field').val();
   updateSaveButtonStatus(titleString, bodyString);
-
 });
 
 function stringIsEmpty(string) {
@@ -227,11 +222,11 @@ function deleteCardData(cardID) {
 
 function getSavedCards() {
   for (var i = 0; i < localStorage.length; i++) {
-      var key = localStorage.key(i);
-      if (key.substring(0, 5) == "card-") {
-          var savedCardString = localStorage.getItem(key);
-          var savedCard = JSON.parse(savedCardString);
-          addCardToList(savedCard);
-      }
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCard = JSON.parse(savedCardString);
+      addCardToList(savedCard);
+    }
   }
 }
