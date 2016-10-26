@@ -1,12 +1,3 @@
-if(localStorage.getItem('count') === null) {
-  var count = 0;
-  localStorage.setItem('count', count);
-} else {
-  var count = localStorage.getItem('count');
-}
-
-var qualityArray = ['swill', 'plausible', 'genius'];
-
 var titleField = $('.title-field');
 var bodyField = $('.body-field');
 var inputFields = $('.title-field, .body-field');
@@ -18,6 +9,15 @@ var tagField = $('.tag-field');
 var tagBar = $('.tag-bar');
 var showAllButton = $('.show-all-button');
 
+if(localStorage.getItem('count') === null) {
+  var count = 0;
+  localStorage.setItem('count', count);
+} else {
+  var count = localStorage.getItem('count');
+}
+
+var qualityArray = ['swill', 'plausible', 'genius'];
+
 showAllButton.hide();
 titleField.focus();
 saveButton.attr('disabled', true);
@@ -25,6 +25,9 @@ saveButton.attr('disabled', true);
 getAllSavedCards();
 addTagsToTagBar(getSavedTags());
 
+function processTags(string) {
+  return string.match(/\w+/g);
+}
 
 function Card(count, title, body, tags) {
   this.id = count;
@@ -198,8 +201,7 @@ function getMatchedCards(searchText) {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
-      var savedCardString = localStorage.getItem(key);
-      var savedCardObject = JSON.parse(savedCardString);
+      var savedCardObject = getOneSavedCard(key);
 
       var bodyMatch = savedCardObject.body.search(searchText);
       var titleMatch  = savedCardObject.title.search(searchText);
@@ -220,8 +222,7 @@ function getTagMatches(tag) {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
-      var savedCardString = localStorage.getItem(key);
-      var savedCardObject = JSON.parse(savedCardString);
+      var savedCardObject = getOneSavedCard(key);
 
       if (savedCardObject.tags !== undefined) {
         if (savedCardObject.tags.includes(tag)) {
@@ -248,27 +249,22 @@ ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
 });
 
 function updateCardTitle(id, newTitleText) {
-  var savedCardString = localStorage.getItem(id);
-  var cardObject = JSON.parse(savedCardString);
+  var cardObject = getOneSavedCard(id);
   cardObject.title = newTitleText;
   saveCard(cardObject);
 }
 
 function updateCardBody(id, newBodyText) {
-  var savedCardString = localStorage.getItem(id);
-  var cardObject = JSON.parse(savedCardString);
+  var cardObject = getOneSavedCard(id);
   cardObject.body = newBodyText;
   saveCard(cardObject);
 }
 
 function updateQualityData(id, newQualityString) {
-  var savedCardString = localStorage.getItem(id);
-  var savedCard = JSON.parse(savedCardString);
+  var savedCard = getOneSavedCard(id);
   savedCard.quality = qualityArray.indexOf(newQualityString);
   saveCard(savedCard);
-
 }
-
 
 function changeQuality(qualityString, direction) {
   var qualityIndex = qualityArray.indexOf(qualityString);
@@ -344,11 +340,15 @@ function getAllSavedCards() {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
-      var savedCardString = localStorage.getItem(key);
-      var savedCard = JSON.parse(savedCardString);
+      var savedCard = getOneSavedCard(key);
       addCardToList(savedCard);
       }
   }
+}
+
+function getOneSavedCard (key) {
+  var savedCardString = localStorage.getItem(key);
+  return JSON.parse(savedCardString);
 }
 
 $('.fa-sort-desc').on('click', function () {
@@ -368,8 +368,7 @@ function sortCards(sortDirection) {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
-      var savedCardString = localStorage.getItem(key);
-      var savedCard = JSON.parse(savedCardString);
+      var savedCard = getOneSavedCard(key);
       cards.push(savedCard);
     }
   }
@@ -403,8 +402,4 @@ function compareCardQualityAscending(cardObjectA, cardObjectB) {
     return 1;
   }
   return 0;
-}
-
-function processTags(string) {
-  return string.match(/\w+/g);
 }
