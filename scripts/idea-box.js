@@ -27,7 +27,7 @@ addTagsToTagBar(getSavedTags());
 
 function processTags(string) {
    var matches = string.match(/\w+/g);
-   if (matches === undefined) {
+   if (matches == null) {
      return [];
    } else {
      return matches;
