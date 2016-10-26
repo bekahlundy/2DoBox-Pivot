@@ -186,6 +186,20 @@ button:focus {
   border-radius: 5px;
 }
 
+.card-tags, .tag-bar {
+  width: 450px;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  flex-wrap: wrap;
+  padding: 0;
+  color: #939598
+}
+
+.card-tags, .tag-bar li {
+  margin-right: 10px;
+}
+
 @media screen and (max-width: 500px){
   body {
     display: block;
@@ -200,6 +214,10 @@ button:focus {
   }
 
   .search-bar {
+    width: 90%;
+  }
+
+  .tag-bar {
     width: 90%;
   }
 

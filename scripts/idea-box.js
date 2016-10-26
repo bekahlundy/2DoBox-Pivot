@@ -14,30 +14,48 @@ var ideaList = $('.idea-list');
 var saveButton = $('.save-button');
 var searchField = $('.search-bar');
 var errorMsg = $('.error-msg');
+var tagField = $('.tag-field');
+var tagBar = $('.tag-bar');
+//var tagBarTags = [];
 
 titleField.focus();
 saveButton.attr('disabled', true);
 
 getSavedCards();
+getSavedTags();
 
-function Card(count, title, body) {
+
+function Card(count, title, body, tags) {
   this.id = count;
   this.title = title;
   this.body = body;
   this.quality = 0;
+  this.tags = tags;
 }
 
 saveButton.on('click', function () {
+  var tagString = tagField.val();
   var title = titleField.val();
   var body = bodyField.val();
-  var newCardData = new Card(count, title, body);
+  var tags = processTags(tagString);
+
+  addTagsToTagBar(tags);
+  saveTags(tags);
+
+  var newCardData = new Card(count, title, body, tags);
   saveCard(newCardData);
+
   addCardToList(newCardData);
   titleField.focus();
   clearInput();
 });
 
 function addCardToList(newCardObject) {
+  // allow for existing cards to have no tag attribute
+  if (newCardObject.tags === undefined) {
+    newCardObject.tags = [];
+  }
+  var tagsHTMLString = addTagsToCard(newCardObject.tags);
   var qualityString = qualityArray[newCardObject.quality];
   var newCard =
     $(`<article class="card" id="card-${newCardObject.id}">
@@ -47,16 +65,61 @@ function addCardToList(newCardObject) {
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
       <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
+      <ul class="card-tags">${tagsHTMLString}</ul>
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
   localStorage.setItem('count', count);
 }
 
+function addTagsToCard(tags) {
+  var tagsHTMLString = '';
+  for (var j = 0; j < tags.length; j++) {
+    tagsHTMLString += (`<li>${tags[j]}</li>`)
+  }
+  return tagsHTMLString;
+}
+
+function addTagsToTagBar(tags) {
+  for (var j = 0; j < tags.length; j++) {
+    if (tagBar.text().search(tags[j]) === -1) {
+      tagBar.append(`<li>${tags[j]}</li>`);
+    }
+  }
+}
+
+function saveTags(tags) {
+  var savedTagsString = localStorage.getItem('tags');
+
+  if (savedTagsString === null) {
+    localStorage.setItem('tags', JSON.stringify(tags));
+    var savedTagsArray = [];
+  } else {
+    var savedTagsArray = JSON.parse(savedTagsString);
+    for (var j = 0; j < tags.length; j++) {
+      if (!savedTagsArray.includes(tags[j])) {
+        savedTagsArray.push(tags[j]);
+      }
+    }
+
+    localStorage.setItem('tags', JSON.stringify(savedTagsArray));
+  }
+
+}
+
+function getSavedTags() {
+  var savedTagsString = localStorage.getItem('tags');
+  if (savedTagsString !== null) {
+    var savedTagsArray = JSON.parse(savedTagsString);
+    addTagsToTagBar(savedTagsArray);
+  }
+}
+
 function clearInput() {
   titleField.val('');
   bodyField.val('');
   searchField.val('');
+  tagField.val('');
 }
 
 ideaList.on('click', '.delete', function () {
@@ -293,4 +356,8 @@ function compareCardQualityAscending(cardObjectA, cardObjectB) {
     return 1;
   }
   return 0;
+}
+
+function processTags(string) {
+  return string.match(/\w+/g);
 }
