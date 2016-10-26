@@ -225,7 +225,6 @@ button:hover {
   }
 
   .show-all-button,
-  .search-bar,
   .tag-bar,
   {
     width: 90%;
@@ -240,6 +239,7 @@ button:hover {
     height: 60px;
   }
 
+  .search-bar,
   .card {
     width: 85%;
   }
