@@ -56,6 +56,7 @@ function addCardToList(newCardObject) {
 function clearInput() {
   titleField.val('');
   bodyField.val('');
+  searchField.val('');
 }
 
 ideaList.on('click', '.delete', function () {
@@ -89,7 +90,7 @@ ideaList.on('click', '.downvote', function () {
 
 searchField.on('keyup blur', function() {
   //clear out list when key is pressed
-  $('.idea-list').children().remove();
+  clearCardList();
   var searchText = $(this).val();
   if (stringIsEmpty(searchText)) {
     getSavedCards();
@@ -98,16 +99,25 @@ searchField.on('keyup blur', function() {
   }
 });
 
+function clearCardList() {
+  $('.idea-list').children().remove();
+}
+
 function getMatchedCards(searchText) {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
       var savedCardString = localStorage.getItem(key);
       var savedCardObject = JSON.parse(savedCardString);
-      var searchBody = savedCardObject.body.search(searchText);
-      var searchTitle = savedCardObject.title.search(searchText);
 
-      if (searchBody !== -1 || searchTitle !== -1) {
+      var bodyMatch = savedCardObject.body.search(searchText);
+      var titleMatch  = savedCardObject.title.search(searchText);
+
+      var savedCardQualityIndex = savedCardObject.quality;
+      var savedCardQualityString = qualityArray[savedCardQualityIndex];
+      var qualityMatch  = savedCardQualityString.search(searchText);
+
+      if (bodyMatch !== -1 || titleMatch !== -1 || qualityMatch !== -1) {
         addCardToList(savedCardObject);
       }
     }
@@ -229,4 +239,58 @@ function getSavedCards() {
       addCardToList(savedCard);
     }
   }
+}
+
+$('.fa-sort-desc').on('click', function () {
+  clearInput();
+  $(this).toggleClass('fa-rotate-180');
+  if ($(this).is('.fa-rotate-180')) {
+    sortCards('up');
+  } else {
+    sortCards('down');
+  }
+});
+
+function sortCards(sortDirection) {
+  clearCardList();
+  var cards = []
+  var sortedCards;
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCard = JSON.parse(savedCardString);
+      cards.push(savedCard);
+    }
+  }
+
+  if (sortDirection === 'up') {
+    sortedCards = cards.sort(compareCardQualityAscending);
+  } else if (sortDirection === 'down') {
+    sortedCards = cards.sort(compareCardQualityDescending);
+  }
+
+  for (var i = 0; i < cards.length; i++) {
+    addCardToList(sortedCards[i]);
+  }
+}
+
+function compareCardQualityDescending(cardObjectA, cardObjectB) {
+  if (cardObjectA.quality < cardObjectB.quality) {
+    return -1;
+  }
+  if (cardObjectA.quality > cardObjectB.quality) {
+    return 1;
+  }
+  return 0;
+}
+
+function compareCardQualityAscending(cardObjectA, cardObjectB) {
+  if (cardObjectA.quality > cardObjectB.quality) {
+    return -1;
+  }
+  if (cardObjectA.quality < cardObjectB.quality) {
+    return 1;
+  }
+  return 0;
 }

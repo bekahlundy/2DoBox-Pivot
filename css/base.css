@@ -85,10 +85,27 @@ button:focus {
   color: #ffffff;
 }
 
-.search-bar {
+.search-sort-tags {
   display: flex;
-  margin: 20px auto;
   width: 450px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.fa-sort-desc {
+  color: #00a79d;
+  vertical-align: center;
+}
+
+
+.fa-sort-desc:hover {
+  color: #045e55;
+}
+
+.search-bar {
+  margin: 20px auto;
+  width: 300px;
 }
 
 .card {
