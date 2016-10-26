@@ -90,6 +90,33 @@ ideaList.on('click', '.downvote', function () {
 
 });
 
+searchField.on('keyup blur', function() {
+  //clear out list when key is pressed
+  $('.idea-list').children().remove();
+  var searchText = $(this).val();
+  if (stringIsEmpty(searchText)) {
+    getSavedCards();
+  } else {
+    getMatchedCards(searchText);
+  }
+});
+
+function getMatchedCards(searchText) {
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCardObject = JSON.parse(savedCardString);
+      var searchBody = savedCardObject.body.search(searchText);
+      var searchTitle = savedCardObject.title.search(searchText);
+
+      if (searchBody !== -1 || searchTitle !== -1) {
+        addCardToList(savedCardObject);
+      }
+    }
+  }
+}
+
 ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
   if (event.which == 13 || event.type === 'focusout') {
     event.preventDefault();
