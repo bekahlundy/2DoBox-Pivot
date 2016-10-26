@@ -184,14 +184,14 @@ tagBar.on('click', 'li', function (event) {
   clearCardList();
   getTagMatches($(this).text());
   showAllButton.fadeIn();
-})
+});
 
 $('.search-sort-tags').on('click', '.show-all-button', function () {
   $(this).fadeOut('normal', function () {
     clearCardList();
     getAllSavedCards();
   });
-})
+});
 
 function clearCardList() {
   $('.idea-list').children().remove();
@@ -209,7 +209,7 @@ function getMatchedCards(searchText) {
     if (key.substring(0, 5) == "card-") {
       var savedCardObject = getOneSavedCard(key);
 
-      var searchQuery = new RegExp(searchText, 'i')
+      var searchQuery = new RegExp(searchText, 'i');
 
       var bodyMatch = savedCardObject.body.search(searchQuery);
       var titleMatch  = savedCardObject.title.search(searchQuery);
@@ -372,7 +372,7 @@ $('.fa-sort-desc').on('click', function () {
 
 function sortCards(sortDirection) {
   clearCardList();
-  var cards = []
+  var cards = [];
   var sortedCards;
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
