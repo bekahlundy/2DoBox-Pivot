@@ -93,18 +93,19 @@ function addTagsToTagBar(tags) {
 
 function saveTags(tags) {
   var savedTagsString = localStorage.getItem('tags');
+  var savedTagsArray = [];
 
   if (savedTagsString === null) {
     localStorage.setItem('tags', JSON.stringify(tags));
-    var savedTagsArray = [];
-  } else if (savedTagsString !== '') {
-    savedTagsArray = JSON.parse(savedTagsString);
-    for (var j = 0; j < tags.length; j++) {
-      if (!savedTagsArray.includes(tags[j])) {
-        savedTagsArray.push(tags[j]);
+  } else {
+      if (savedTagsString !== '') {
+        savedTagsArray = JSON.parse(savedTagsString);
       }
-    }
-
+      for (var j = 0; j < tags.length; j++) {
+        if (!savedTagsArray.includes(tags[j])) {
+          savedTagsArray.push(tags[j]);
+        }
+      }
     localStorage.setItem('tags', JSON.stringify(savedTagsArray));
   }
 }
