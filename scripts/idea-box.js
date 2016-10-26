@@ -177,18 +177,13 @@ tagBar.on('click', 'li', function (event) {
   showAllButton.fadeIn();
 })
 
-$('.bottom-section').on('click', '.show-all-button', function () {
+$('.search-sort-tags').on('click', '.show-all-button', function () {
   $(this).fadeOut('normal', function () {
     clearCardList();
     getAllSavedCards();
   });
 })
 
-function displayTagMatches(tag) {
-  clearCardList();
-  var savedTagsString = localStorage.getItem('tags');
-
-}
 function clearCardList() {
   $('.idea-list').children().remove();
 }
@@ -241,6 +236,7 @@ function getTagMatches(tag) {
 ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
   if (event.which == 13 || event.type === 'focusout') {
     event.preventDefault();
+
     if ($(this).is('.card-title')) {
       var newTitleText = $(this).text();
       updateCardTitle($(this).parent().attr('id'), newTitleText);

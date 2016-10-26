@@ -210,6 +210,11 @@ button:hover {
   margin-right: 10px;
 }
 
+.tag-bar li:hover {
+  cursor: pointer;
+  filter: opacity(90%);
+}
+
 @media screen and (max-width: 500px){
   body {
     display: block;
