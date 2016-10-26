@@ -73,16 +73,26 @@ button:focus {
   filter: opacity(80%);
 }
 
-.save-button {
+.save-button, .show-all-button {
   background-color: #00a79d;
   color: #ffffff;
   border: none;
   height: 35px;
 }
 
-.save-button:hover {
+button:hover {
   background-color: #045e55;
   color: #ffffff;
+}
+
+.show-all-button {
+  width: 450px;
+}
+
+.tag-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .search-sort-tags {
@@ -204,21 +214,20 @@ button:focus {
   body {
     display: block;
   }
+  .show-all-button,
+  .search-bar,
+  .tag-bar,
+  {
+    width: 90%;
+  }
 
+  .search-sort-tags,
   .form-section {
     width: 95%;
   }
 
   .body-field {
     height: 60px;
-  }
-
-  .search-bar {
-    width: 90%;
-  }
-
-  .tag-bar {
-    width: 90%;
   }
 
   .card {

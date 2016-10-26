@@ -16,13 +16,14 @@ var searchField = $('.search-bar');
 var errorMsg = $('.error-msg');
 var tagField = $('.tag-field');
 var tagBar = $('.tag-bar');
-//var tagBarTags = [];
+var showAllButton = $('.show-all-button');
 
+showAllButton.hide();
 titleField.focus();
 saveButton.attr('disabled', true);
 
-getSavedCards();
-getSavedTags();
+getAllSavedCards();
+addTagsToTagBar(getSavedTags());
 
 
 function Card(count, title, body, tags) {
@@ -110,9 +111,13 @@ function saveTags(tags) {
 function getSavedTags() {
   var savedTagsString = localStorage.getItem('tags');
   if (savedTagsString !== null) {
-    var savedTagsArray = JSON.parse(savedTagsString);
-    addTagsToTagBar(savedTagsArray);
+    return JSON.parse(savedTagsString);
+    //addTagsToTagBar(savedTagsArray);
   }
+}
+
+function displaySavedTags() {
+
 }
 
 function clearInput() {
@@ -156,12 +161,28 @@ searchField.on('keyup blur', function() {
   clearCardList();
   var searchText = $(this).val();
   if (stringIsEmpty(searchText)) {
-    getSavedCards();
+    getAllSavedCards();
   } else {
     getMatchedCards(searchText);
   }
 });
 
+tagBar.on('click', 'li', function (event) {
+  clearCardList();
+  getTagMatches($(this).text());
+  showAllButton.show();
+})
+
+$('.bottom-section').on('click', '.show-all-button', function () {
+  clearCardList();
+  getAllSavedCards();
+})
+
+function displayTagMatches(tag) {
+  clearCardList();
+  var savedTagsString = localStorage.getItem('tags');
+
+}
 function clearCardList() {
   $('.idea-list').children().remove();
 }
@@ -186,6 +207,24 @@ function getMatchedCards(searchText) {
     }
   }
 }
+
+function getTagMatches(tag) {
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCardObject = JSON.parse(savedCardString);
+
+      if (savedCardObject.tags !== undefined) {
+        if (savedCardObject.tags.includes(tag)) {
+          addCardToList(savedCardObject);
+        }
+      }
+    }
+  }
+}
+
 
 ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
   if (event.which == 13 || event.type === 'focusout') {
@@ -293,7 +332,7 @@ function deleteCardData(cardID) {
   localStorage.removeItem(cardID);
 }
 
-function getSavedCards() {
+function getAllSavedCards() {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
@@ -361,3 +400,4 @@ function compareCardQualityAscending(cardObjectA, cardObjectB) {
 function processTags(string) {
   return string.match(/\w+/g);
 }
+
