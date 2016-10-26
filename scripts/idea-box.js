@@ -14,30 +14,49 @@ var ideaList = $('.idea-list');
 var saveButton = $('.save-button');
 var searchField = $('.search-bar');
 var errorMsg = $('.error-msg');
+var tagField = $('.tag-field');
+var tagBar = $('.tag-bar');
+var showAllButton = $('.show-all-button');
 
+showAllButton.hide();
 titleField.focus();
 saveButton.attr('disabled', true);
 
-getSavedCards();
+getAllSavedCards();
+addTagsToTagBar(getSavedTags());
 
-function Card(count, title, body) {
+
+function Card(count, title, body, tags) {
   this.id = count;
   this.title = title;
   this.body = body;
   this.quality = 0;
+  this.tags = tags;
 }
 
 saveButton.on('click', function () {
+  var tagString = tagField.val();
   var title = titleField.val();
   var body = bodyField.val();
-  var newCardData = new Card(count, title, body);
+  var tags = processTags(tagString);
+
+  addTagsToTagBar(tags);
+  saveTags(tags);
+
+  var newCardData = new Card(count, title, body, tags);
   saveCard(newCardData);
+
   addCardToList(newCardData);
   titleField.focus();
   clearInput();
 });
 
 function addCardToList(newCardObject) {
+  // allow for existing cards to have no tag attribute
+  if (newCardObject.tags === undefined) {
+    newCardObject.tags = [];
+  }
+  var tagsHTMLString = addTagsToCard(newCardObject.tags);
   var qualityString = qualityArray[newCardObject.quality];
   var newCard =
     $(`<article class="card" id="card-${newCardObject.id}">
@@ -47,15 +66,63 @@ function addCardToList(newCardObject) {
       <input class="card-button upvote" type="button" name="name" value="">
       <input class="card-button downvote" type="button" name="name" value="">
       <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
+      <ul class="card-tags">${tagsHTMLString}</ul>
     </article>`).hide().fadeIn('normal');
   ideaList.prepend(newCard);
   count++;
   localStorage.setItem('count', count);
 }
 
+function addTagsToCard(tags) {
+  var tagsHTMLString = '';
+  for (var j = 0; j < tags.length; j++) {
+    tagsHTMLString += (`<li>${tags[j]}</li>`)
+  }
+  return tagsHTMLString;
+}
+
+function addTagsToTagBar(tags) {
+  if (tags !== undefined) {
+    for (var j = 0; j < tags.length; j++) {
+      if (tagBar.text().search(tags[j]) === -1) {
+        tagBar.append($(`<li>${tags[j]}</li>`).hide().fadeIn('normal'));
+      }
+    }
+  }
+}
+
+function saveTags(tags) {
+  var savedTagsString = localStorage.getItem('tags');
+  var savedTagsArray = [];
+
+  if (savedTagsString === null) {
+    localStorage.setItem('tags', JSON.stringify(tags));
+  } else {
+      if (savedTagsString !== '') {
+        savedTagsArray = JSON.parse(savedTagsString);
+      }
+      for (var j = 0; j < tags.length; j++) {
+        if (!savedTagsArray.includes(tags[j])) {
+          savedTagsArray.push(tags[j]);
+        }
+      }
+    localStorage.setItem('tags', JSON.stringify(savedTagsArray));
+  }
+}
+
+function getSavedTags() {
+  var savedTagsString = localStorage.getItem('tags');
+  if (savedTagsString !== null && savedTagsString !== '') {
+    return JSON.parse(savedTagsString);
+    //addTagsToTagBar(savedTagsArray);
+  }
+}
+
 function clearInput() {
   titleField.val('');
   bodyField.val('');
+  searchField.val('');
+  tagField.val('');
 }
 
 ideaList.on('click', '.delete', function () {
@@ -68,7 +135,13 @@ ideaList.on('click', '.delete', function () {
 
 function resetCounter() {
   if ($('.idea-list').children().length === 0) {
+    // reset counter to zero after deletin last card
     localStorage.setItem('count', 0);
+    //clear all tags after deleting last card
+    localStorage.setItem('tags', []);
+    // remove tags from tag-bar
+    clearTagBar();
+
     count = 0;
   }
 }
@@ -89,14 +162,37 @@ ideaList.on('click', '.downvote', function () {
 
 searchField.on('keyup blur', function() {
   //clear out list when key is pressed
-  $('.idea-list').children().remove();
+  clearCardList();
   var searchText = $(this).val();
   if (stringIsEmpty(searchText)) {
-    getSavedCards();
+    getAllSavedCards();
   } else {
     getMatchedCards(searchText);
   }
 });
+
+tagBar.on('click', 'li', function (event) {
+  clearCardList();
+  getTagMatches($(this).text());
+  showAllButton.fadeIn();
+})
+
+$('.search-sort-tags').on('click', '.show-all-button', function () {
+  $(this).fadeOut('normal', function () {
+    clearCardList();
+    getAllSavedCards();
+  });
+})
+
+function clearCardList() {
+  $('.idea-list').children().remove();
+}
+
+function clearTagBar() {
+  $('.tag-bar').children().fadeOut('normal', function () {
+    $('.tag-bar').children().remove();
+  });
+}
 
 function getMatchedCards(searchText) {
   for (var i = 0; i < localStorage.length; i++) {
@@ -104,19 +200,43 @@ function getMatchedCards(searchText) {
     if (key.substring(0, 5) == "card-") {
       var savedCardString = localStorage.getItem(key);
       var savedCardObject = JSON.parse(savedCardString);
-      var searchBody = savedCardObject.body.search(searchText);
-      var searchTitle = savedCardObject.title.search(searchText);
 
-      if (searchBody !== -1 || searchTitle !== -1) {
+      var bodyMatch = savedCardObject.body.search(searchText);
+      var titleMatch  = savedCardObject.title.search(searchText);
+
+      var savedCardQualityIndex = savedCardObject.quality;
+      var savedCardQualityString = qualityArray[savedCardQualityIndex];
+      var qualityMatch  = savedCardQualityString.search(searchText);
+
+      if (bodyMatch !== -1 || titleMatch !== -1 || qualityMatch !== -1) {
         addCardToList(savedCardObject);
       }
     }
   }
 }
 
+function getTagMatches(tag) {
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCardObject = JSON.parse(savedCardString);
+
+      if (savedCardObject.tags !== undefined) {
+        if (savedCardObject.tags.includes(tag)) {
+          addCardToList(savedCardObject);
+        }
+      }
+    }
+  }
+}
+
+
 ideaList.on('keypress blur', '.card-title, .card-body', function (event) {
   if (event.which == 13 || event.type === 'focusout') {
     event.preventDefault();
+
     if ($(this).is('.card-title')) {
       var newTitleText = $(this).text();
       updateCardTitle($(this).parent().attr('id'), newTitleText);
@@ -220,7 +340,7 @@ function deleteCardData(cardID) {
   localStorage.removeItem(cardID);
 }
 
-function getSavedCards() {
+function getAllSavedCards() {
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     if (key.substring(0, 5) == "card-") {
@@ -229,4 +349,62 @@ function getSavedCards() {
       addCardToList(savedCard);
       }
   }
+}
+
+$('.fa-sort-desc').on('click', function () {
+  clearInput();
+  $(this).toggleClass('fa-rotate-180');
+  if ($(this).is('.fa-rotate-180')) {
+    sortCards('up');
+  } else {
+    sortCards('down');
+  }
+});
+
+function sortCards(sortDirection) {
+  clearCardList();
+  var cards = []
+  var sortedCards;
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.substring(0, 5) == "card-") {
+      var savedCardString = localStorage.getItem(key);
+      var savedCard = JSON.parse(savedCardString);
+      cards.push(savedCard);
+    }
+  }
+
+  if (sortDirection === 'up') {
+    sortedCards = cards.sort(compareCardQualityAscending);
+  } else if (sortDirection === 'down') {
+    sortedCards = cards.sort(compareCardQualityDescending);
+  }
+
+  for (var i = 0; i < cards.length; i++) {
+    addCardToList(sortedCards[i]);
+  }
+}
+
+function compareCardQualityDescending(cardObjectA, cardObjectB) {
+  if (cardObjectA.quality < cardObjectB.quality) {
+    return -1;
+  }
+  if (cardObjectA.quality > cardObjectB.quality) {
+    return 1;
+  }
+  return 0;
+}
+
+function compareCardQualityAscending(cardObjectA, cardObjectB) {
+  if (cardObjectA.quality > cardObjectB.quality) {
+    return -1;
+  }
+  if (cardObjectA.quality < cardObjectB.quality) {
+    return 1;
+  }
+  return 0;
+}
+
+function processTags(string) {
+  return string.match(/\w+/g);
 }
