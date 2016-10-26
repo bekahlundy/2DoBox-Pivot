@@ -1,6 +1,6 @@
 var titleField = $('.title-field');
 var bodyField = $('.body-field');
-var inputFields = $('.title-field, .body-field');
+var inputFields = $('.title-field, .body-field, .tag-field');
 var ideaList = $('.idea-list');
 var saveButton = $('.save-button');
 var searchField = $('.search-bar');
@@ -26,7 +26,12 @@ getAllSavedCards();
 addTagsToTagBar(getSavedTags());
 
 function processTags(string) {
-  return string.match(/\w+/g);
+   var matches = string.match(/\w+/g);
+   if (matches === undefined) {
+     return [];
+   } else {
+     return matches;
+   }
 }
 
 function Card(count, title, body, tags) {
@@ -85,7 +90,7 @@ function addTagsToCard(tags) {
 }
 
 function addTagsToTagBar(tags) {
-  if (tags !== undefined) {
+  if (tags !== null && tags !== '') {
     for (var j = 0; j < tags.length; j++) {
       if (tagBar.text().search(tags[j]) === -1) {
         tagBar.append($(`<li>${tags[j]}</li>`).hide().fadeIn('normal'));
@@ -117,7 +122,8 @@ function getSavedTags() {
   var savedTagsString = localStorage.getItem('tags');
   if (savedTagsString !== null && savedTagsString !== '') {
     return JSON.parse(savedTagsString);
-    //addTagsToTagBar(savedTagsArray);
+  } else {
+    return [];
   }
 }
 
@@ -286,6 +292,7 @@ function changeQuality(qualityString, direction) {
 inputFields.on('blur keypress', function () {
   var titleString = $('.title-field').val();
   var bodyString = $('.body-field').val();
+
   updateSaveButtonStatus(titleString, bodyString);
 });
 
