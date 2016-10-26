@@ -240,7 +240,12 @@ button:hover {
   }
 
   .search-bar,
-  .card {
+  .card,
+  .card-tags {
     width: 85%;
+  }
+
+  .search-bar {
+    margin: 15px 0;
   }
 }
