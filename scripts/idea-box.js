@@ -82,9 +82,11 @@ function addTagsToCard(tags) {
 }
 
 function addTagsToTagBar(tags) {
-  for (var j = 0; j < tags.length; j++) {
-    if (tagBar.text().search(tags[j]) === -1) {
-      tagBar.append($(`<li>${tags[j]}</li>`).hide().fadeIn('normal'));
+  if (tags !== undefined) {
+    for (var j = 0; j < tags.length; j++) {
+      if (tagBar.text().search(tags[j]) === -1) {
+        tagBar.append($(`<li>${tags[j]}</li>`).hide().fadeIn('normal'));
+      }
     }
   }
 }
@@ -95,8 +97,8 @@ function saveTags(tags) {
   if (savedTagsString === null) {
     localStorage.setItem('tags', JSON.stringify(tags));
     var savedTagsArray = [];
-  } else {
-    var savedTagsArray = JSON.parse(savedTagsString);
+  } else if (savedTagsString !== '') {
+    savedTagsArray = JSON.parse(savedTagsString);
     for (var j = 0; j < tags.length; j++) {
       if (!savedTagsArray.includes(tags[j])) {
         savedTagsArray.push(tags[j]);
@@ -105,19 +107,14 @@ function saveTags(tags) {
 
     localStorage.setItem('tags', JSON.stringify(savedTagsArray));
   }
-
 }
 
 function getSavedTags() {
   var savedTagsString = localStorage.getItem('tags');
-  if (savedTagsString !== null) {
+  if (savedTagsString !== null && savedTagsString !== '') {
     return JSON.parse(savedTagsString);
     //addTagsToTagBar(savedTagsArray);
   }
-}
-
-function displaySavedTags() {
-
 }
 
 function clearInput() {
@@ -137,7 +134,13 @@ ideaList.on('click', '.delete', function () {
 
 function resetCounter() {
   if ($('.idea-list').children().length === 0) {
+    // reset counter to zero after deletin last card
     localStorage.setItem('count', 0);
+    //clear all tags after deleting last card
+    localStorage.setItem('tags', []);
+    // remove tags from tag-bar
+    clearTagBar();
+
     count = 0;
   }
 }
@@ -187,6 +190,12 @@ function displayTagMatches(tag) {
 }
 function clearCardList() {
   $('.idea-list').children().remove();
+}
+
+function clearTagBar() {
+  $('.tag-bar').children().fadeOut('normal', function () {
+    $('.tag-bar').children().remove();
+  });
 }
 
 function getMatchedCards(searchText) {
@@ -402,4 +411,3 @@ function compareCardQualityAscending(cardObjectA, cardObjectB) {
 function processTags(string) {
   return string.match(/\w+/g);
 }
-
