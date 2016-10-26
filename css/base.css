@@ -85,6 +85,10 @@ button:hover {
   color: #ffffff;
 }
 
+.save-button:disabled {
+  background-color: #D0D2D3;
+}
+
 .show-all-button {
   width: 450px;
 }
@@ -219,8 +223,8 @@ button:hover {
   body {
     display: block;
   }
+
   .show-all-button,
-  .search-bar,
   .tag-bar,
   {
     width: 90%;
@@ -235,6 +239,7 @@ button:hover {
     height: 60px;
   }
 
+  .search-bar,
   .card {
     width: 85%;
   }
