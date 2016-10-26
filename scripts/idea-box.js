@@ -84,7 +84,7 @@ function addTagsToCard(tags) {
 function addTagsToTagBar(tags) {
   for (var j = 0; j < tags.length; j++) {
     if (tagBar.text().search(tags[j]) === -1) {
-      tagBar.append(`<li>${tags[j]}</li>`);
+      tagBar.append($(`<li>${tags[j]}</li>`).hide().fadeIn('normal'));
     }
   }
 }
@@ -170,12 +170,14 @@ searchField.on('keyup blur', function() {
 tagBar.on('click', 'li', function (event) {
   clearCardList();
   getTagMatches($(this).text());
-  showAllButton.show();
+  showAllButton.fadeIn();
 })
 
 $('.bottom-section').on('click', '.show-all-button', function () {
-  clearCardList();
-  getAllSavedCards();
+  $(this).fadeOut('normal', function () {
+    clearCardList();
+    getAllSavedCards();
+  });
 })
 
 function displayTagMatches(tag) {
