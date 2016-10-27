@@ -8,6 +8,7 @@ var errorMsg = $('.error-msg');
 var tagField = $('.tag-field');
 var tagBar = $('.tag-bar');
 var showAllButton = $('.show-all-button');
+var sortButton = $('.sort-button');
 
 if(localStorage.getItem('count') === null) {
   var count = 0;
@@ -20,7 +21,9 @@ var qualityArray = ['swill', 'plausible', 'genius'];
 
 showAllButton.hide();
 titleField.focus();
+
 saveButton.attr('disabled', true);
+sortButton.attr('disabled', true);
 
 getAllSavedCards();
 addTagsToTagBar(getSavedTags());
@@ -57,6 +60,7 @@ saveButton.on('click', function () {
   addCardToList(newCardData);
   titleField.focus();
   clearInput();
+  saveButton.attr('disabled', true);
 });
 
 function addCardToList(newCardObject) {
@@ -79,6 +83,8 @@ function addCardToList(newCardObject) {
   ideaList.prepend(newCard);
   count++;
   localStorage.setItem('count', count);
+  sortButton.attr('disabled', false);
+
 }
 
 function addTagsToCard(tags) {
@@ -150,6 +156,7 @@ function resetCounter() {
     localStorage.setItem('tags', []);
     // remove tags from tag-bar
     clearTagBar();
+    sortButton.attr('disabled', true);
 
     count = 0;
   }
@@ -360,7 +367,7 @@ function getOneSavedCard (key) {
   return JSON.parse(savedCardString);
 }
 
-$('.fa-sort-desc').on('click', function () {
+sortButton.on('click', function () {
   clearInput();
   $(this).toggleClass('fa-rotate-180');
   if ($(this).is('.fa-rotate-180')) {

@@ -107,14 +107,18 @@ button:hover {
   justify-content: space-between;
 }
 
-.fa-sort-desc {
+.sort-button {
   color: #00a79d;
   vertical-align: center;
 }
 
-
-.fa-sort-desc:hover {
+.sort-button:hover {
   color: #045e55;
+}
+
+.sort-button[disabled],
+.sort-button[disabled]:hover {
+  color: #D0D2D3;
 }
 
 .search-bar {
