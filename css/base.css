@@ -112,6 +112,7 @@ button:hover {
 .sort-button {
   color: #00a79d;
   vertical-align: center;
+  margin: 0 20px;
 }
 
 .sort-button:hover {
@@ -124,8 +125,15 @@ button:hover {
 }
 
 .search-bar {
-  margin: 20px auto;
-  width: 300px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.container {
+  margin: 0 auto;
+  width: 450px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .card {
@@ -240,12 +248,12 @@ button:hover {
   .show-all-button,
   .tag-bar,
   {
-    width: 90%;
+    width: 85%;
   }
 
   .search-sort-tags,
   .form-section {
-    width: 95%;
+    width: 85%;
   }
 
   .body-field {
