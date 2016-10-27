@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" href="./css/base.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
     <title>IdeaBox</title>
   </head>
@@ -23,8 +23,10 @@
 
     <section class="bottom-section">
       <section class="search-sort-tags">
-      <input class="text-input search-bar" type="text" name="Search" value="" placeholder="Search">
-      <i class="fa fa-sort-desc fa-3x" aria-hidden="true"></i>
+      <div class="container">
+        <input class="text-input search-bar" type="text" name="Search" value="" placeholder="Search">
+        <i class="sort-button fa fa-sort-desc fa-3x" aria-hidden="true"></i>
+      </div>
       <ul class="tag-bar"></ul>
       <button class="show-all-button form-item" type="button" name="show-all-button">Show All</button>
       </section>

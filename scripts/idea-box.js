@@ -8,6 +8,7 @@ var errorMsg = $('.error-msg');
 var tagField = $('.tag-field');
 var tagBar = $('.tag-bar');
 var showAllButton = $('.show-all-button');
+var sortButton = $('.sort-button');
 
 if(localStorage.getItem('count') === null) {
   var count = 0;
@@ -20,7 +21,9 @@ var qualityArray = ['swill', 'plausible', 'genius'];
 
 showAllButton.hide();
 titleField.focus();
+
 saveButton.attr('disabled', true);
+sortButton.attr('disabled', true);
 
 getAllSavedCards();
 addTagsToTagBar(getSavedTags());
@@ -57,6 +60,7 @@ saveButton.on('click', function () {
   addCardToList(newCardData);
   titleField.focus();
   clearInput();
+  saveButton.attr('disabled', true);
 });
 
 function addCardToList(newCardObject) {
@@ -65,7 +69,7 @@ function addCardToList(newCardObject) {
     newCardObject.tags = [];
   }
   var tagsHTMLString = addTagsToCard(newCardObject.tags);
-  var qualityString = qualityArray[newCardObject.quality];
+  var qualityString = qualityIndexToString(newCardObject.quality);
   var newCard =
     $(`<article class="card" id="card-${newCardObject.id}">
       <h2 class="card-title" contentEditable="true">${newCardObject.title}</h2>
@@ -76,9 +80,12 @@ function addCardToList(newCardObject) {
       <div class="card-quality">quality: <span class="quality-value">${qualityString}</span></div>
       <ul class="card-tags">${tagsHTMLString}</ul>
     </article>`).hide().fadeIn('normal');
+  updateVoteButtonStatus(newCardObject.quality, newCard);
   ideaList.prepend(newCard);
   count++;
   localStorage.setItem('count', count);
+  sortButton.attr('disabled', false);
+
 }
 
 function addTagsToCard(tags) {
@@ -150,6 +157,7 @@ function resetCounter() {
     localStorage.setItem('tags', []);
     // remove tags from tag-bar
     clearTagBar();
+    sortButton.attr('disabled', true);
 
     count = 0;
   }
@@ -157,14 +165,23 @@ function resetCounter() {
 
 ideaList.on('click', '.upvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
-  var newQualityString= changeQuality(qualityValue, 'up');
+  var newQualityIndex = changeQuality(qualityValue, 'up');
+
+  updateVoteButtonStatus(newQualityIndex, $(this).parent());
+
+  var newQualityString = qualityIndexToString(newQualityIndex);
+
   $(this).parent().find('.quality-value').text(newQualityString);
   updateQualityData($(this).parent().attr('id'), newQualityString);
 });
 
 ideaList.on('click', '.downvote', function () {
   var qualityValue = $(this).parent().find('.quality-value').text();
-  var newQualityString = changeQuality(qualityValue, 'down');
+  var newQualityIndex = changeQuality(qualityValue, 'down');
+
+  updateVoteButtonStatus(newQualityIndex, $(this).parent());
+
+  var newQualityString = qualityIndexToString(newQualityIndex);
   $(this).parent().find('.quality-value').text(newQualityString);
   updateQualityData($(this).parent().attr('id'), newQualityString);
 });
@@ -214,8 +231,7 @@ function getMatchedCards(searchText) {
       var bodyMatch = savedCardObject.body.search(searchQuery);
       var titleMatch  = savedCardObject.title.search(searchQuery);
 
-      var savedCardQualityIndex = savedCardObject.quality;
-      var savedCardQualityString = qualityArray[savedCardQualityIndex];
+      var savedCardQualityString = qualityIndexToString(savedCardObject.quality);
       var qualityMatch  = savedCardQualityString.search(searchQuery);
 
       if (bodyMatch !== -1 || titleMatch !== -1 || qualityMatch !== -1) {
@@ -270,25 +286,42 @@ function updateCardBody(id, newBodyText) {
 
 function updateQualityData(id, newQualityString) {
   var savedCard = getOneSavedCard(id);
-  savedCard.quality = qualityArray.indexOf(newQualityString);
+  savedCard.quality = qualityStringToIndex(newQualityString);
   saveCard(savedCard);
 }
 
 function changeQuality(qualityString, direction) {
-  var qualityIndex = qualityArray.indexOf(qualityString);
-  var newQualityIndex = qualityIndex;
+  var currentQualityIndex = qualityStringToIndex(qualityString);
+  var newQualityIndex = currentQualityIndex;
 
-  if (direction === 'up') {
-    if (qualityIndex !== 2) {
-      newQualityIndex = qualityIndex + 1;
+  if (direction === 'up' && currentQualityIndex !== 2) {
+      newQualityIndex = currentQualityIndex + 1;
+    } else if (direction === 'down' && currentQualityIndex !== 0) {
+      newQualityIndex = currentQualityIndex - 1;
     }
-  } else {
-    if (qualityIndex !== 0) {
-      newQualityIndex = qualityIndex - 1;
-    }
+  return newQualityIndex;
+}
+
+function updateVoteButtonStatus(qualityIndex, card) {
+
+  switch (qualityIndex) {
+    case 0:
+      card.children('.downvote').attr('disabled', true);
+      break;
+    case 1:
+      card.children('.upvote, .downvote').attr('disabled', false);
+      break;
+    case 2:
+      card.children('.upvote').attr('disabled', true);
   }
+}
 
-  return qualityArray[newQualityIndex];
+function qualityIndexToString(qualityIndex) {
+  return qualityArray[qualityIndex];
+}
+
+function qualityStringToIndex(qualityString) {
+  return qualityArray.indexOf(qualityString);
 }
 
 inputFields.on('blur keypress', function () {
@@ -360,7 +393,7 @@ function getOneSavedCard (key) {
   return JSON.parse(savedCardString);
 }
 
-$('.fa-sort-desc').on('click', function () {
+sortButton.on('click', function () {
   clearInput();
   $(this).toggleClass('fa-rotate-180');
   if ($(this).is('.fa-rotate-180')) {
