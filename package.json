@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/esayler/2DoBox-Pivot/issues"
   },
-  "homepage": "https://github.com/esayler/2DoBox-Pivot#readme"
+  "homepage": "https://github.com/esayler/2DoBox-Pivot#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "mocha-loader": "^1.0.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  }
 }
