@@ -1,6 +1,13 @@
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ],
   entry: {
     main: "./lib/index.js",
     test: "mocha!./test/index.js"
