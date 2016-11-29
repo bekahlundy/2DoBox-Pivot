@@ -1,3 +1,5 @@
+
+
 body {
   font-family: 'Roboto Slab', serif;
   margin-top: 0;
@@ -160,13 +162,13 @@ button:hover {
 }
 
 .delete {
-  /*background-image: url("../images/delete.svg");*/
+  background-image: url("/images/delete.svg");
   display: inline-block;
   float: right;
 }
 
 .delete:hover {
-  /*background-image: url("../images/delete-hover.svg");*/
+  background-image: url("/images/delete-hover.svg");
 }
 
 .card-body {
@@ -175,26 +177,26 @@ button:hover {
 
 .upvote,
 .upvote[disabled]:hover {
-  /*background-image: url("../images/upvote.svg");*/
+  background-image: url("/images/upvote.svg");
   display: inline-block;
   margin-right: 15px;
 }
 
 
 .upvote:hover {
-  /*background-image: url("../images/upvote-hover.svg");*/
+  background-image: url("/images/upvote-hover.svg");
 }
 
 
 .downvote,
 .downvote[disabled]:hover {
-  /*background-image: url("../images/downvote.svg");*/
+  background-image: url("/images/downvote.svg");
   display: inline-block;
   margin-right: 15px;
 }
 
 .downvote:hover {
-  /*background-image: url("../images/downvote-hover.svg");*/
+  background-image: url("/images/downvote-hover.svg");
 }
 
 
