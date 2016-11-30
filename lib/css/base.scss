@@ -42,7 +42,7 @@ body {
   height: 30px;
 }
 
-.body-field {
+.task-field {
   outline: none;
   resize: none;
   border: solid 1px #D0D2D3;
@@ -188,7 +188,7 @@ button:hover {
   background-image: url("/images/delete-hover.svg");
 }
 
-.card-body {
+.card-task {
   color: #939598;
 }
 
@@ -292,7 +292,7 @@ button:hover {
 }
 
 @media screen and (max-width: 500px){
-  .body-field {
+  .task-field {
     height: 60px;
   }
 
