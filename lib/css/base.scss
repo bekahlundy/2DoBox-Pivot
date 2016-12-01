@@ -81,7 +81,7 @@ button:focus {
   filter: opacity(80%);
 }
 
-.save-button, .show-all-button, .complete-button {
+.save-button, .show-all-button, .complete-button, .show-complete-button {
   background-color: #00a79d;
   color: #ffffff;
   border: none;
@@ -107,7 +107,7 @@ button:hover {
   justify-content: space-between;
 }
 
-.search-sort-tags {
+.display-menu {
   display: flex;
   width: 450px;
   margin: 0 auto;
@@ -296,7 +296,7 @@ button:hover {
     height: 60px;
   }
 
-  .search-sort-tags,
+  .display-menu,
   .form-section,
   .tag-bar,
   .show-all-button,
