@@ -81,7 +81,7 @@ button:focus {
   filter: opacity(80%);
 }
 
-.save-button, .show-all-button {
+.save-button, .show-all-button, .complete-button {
   background-color: #00a79d;
   color: #ffffff;
   border: none;
@@ -160,8 +160,8 @@ button:hover {
   padding: 12px;
 }
 
-.card:hover {
-  // background-color: #FAFAFA;
+.complete {
+  background-color: #EEEEEE;
 }
 
 .card-title {
