@@ -1,37 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
     <title>2DoBox</title>
   </head>
 
   <body>
     <section class="top-section">
-      <h1 class="title"><span class="title-idea">2do</span><span class="title-box">box</span></h1>
+      <h1 class="title">
+        <span class="title-name">2doBox</span>
+      </h1>
       <section class="form-section">
-        <input class="text-input form-item title-field" type="text" name="Title" placeholder="Title">
-        <textarea class="text-input form-item task-field" type="text" name="Task" placeholder="Task"></textarea>
-        <input class="text-input form-item tag-field" type="text" name="Tags" placeholder="Tags">
-        <p class="form-item error-msg">Input field(s) are blank!</p>
-        <button class="save-button form-item" type="button" name="save-button" disabled>save</button>
+        <input class="text-input form-item title-field" type="text" name="Title" aria-label="Title" placeholder="Title">
+        <textarea class="text-input form-item task-field" type="text" name="Task" aria-label="Task" placeholder="Task"></textarea>
+        <input class="text-input form-item tag-field" type="text" name="Tags" aria-label="Tags" placeholder="Tags">
+        <!-- <p class="form-item error-msg">Input field(s) are blank!</p> -->
+        <button class="save-button form-item" type="button" name="save-button" disabled>save
+        </button>
       </section>
     </section>
 
     <section class="bottom-section">
       <section class="display-menu">
-      <div class="container">
-        <input class="text-input search-bar" type="text" name="Search" value="" placeholder="Search">
-        <i class="sort-button fa fa-sort-desc fa-3x" aria-hidden="true" role="button" tabindex="0"></i>
-      </div>
-      <ul class="layout-flex-wrap tag-bar"></ul>
-      <button class="show-complete-button form-item" type="button" name="show-complete-button">Show Completed Tasks</button>
-      <button class="show-all-button form-item" type="button" name="show-all-button">Show All</button>
+        <div class="container">
+          <input class="text-input search-bar" type="text" name="Search" aria-label="Search" placeholder="Search">
+          <i class="sort-button fa fa-sort-desc fa-3x" aria-hidden="true" role="button" tabindex="0">
+          </i>
+        </div>
+        <ul class="layout-flex-wrap tag-bar">
+        </ul>
+        <button class="show-complete-button form-item" type="button" name="show-complete-button">Show Completed Tasks
+        </button>
+        <button class="show-all-button form-item" type="button" name="show-all-button">Show All
+        </button>
       </section>
-      <section class="todo-list"></section>
+
+      <section class="todo-list">
+      </section>
       <section class="list-footer">
-        <button class="show-more-button" type="button" name="show-more-button">Show More</button>
+        <button class="show-more-button" type="button" name="show-more-button">Show More
+        </button>
       </section>
     </section>
 
