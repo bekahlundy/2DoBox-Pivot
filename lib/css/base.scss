@@ -1,42 +1,39 @@
 @import "node_modules/normalize-scss/sass/normalize";
 @include normalize();
 
+$light-color: #ffffff;
+$dark-text: black;
+$background-color: #c4e9f2;
+$dark-accent-color: #107895;
+$hover: #2c464c;
+
 body {
   font-family: 'Roboto Slab', serif;
   margin-top: 0;
 }
 
 .top-section {
-  background-color: #e5f3f2;
+  background-color: $background-color;
  }
 
 .title {
-  margin: 0 auto;
   display: flex;
-  width: 100%;
   justify-content: center;
-  padding: 20px 0;
   letter-spacing: 1px;
-}
-
-.title-idea {
-  color: #00a79d;
-}
-
-.title-box {
-  color: #6d6b71;
+  margin: 0 auto;
+  padding: 20px 0;
+  width: 100%;
+  color: $dark-accent-color
 }
 
 .form-section {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
   margin: 0 auto;
-  width: 465px;
   padding-bottom: 10px;
+  width: 465px;
 }
-
-
 
 .text-input {
   height: 30px;
@@ -82,8 +79,8 @@ button:focus {
 }
 
 .save-button, .show-all-button, .complete-button, .show-complete-button, .show-more-button {
-  background-color: #00a79d;
-  color: #ffffff;
+  background-color: $dark-accent-color;
+  color: $light-color;
   border: none;
   height: 35px;
 }
@@ -92,23 +89,19 @@ button:focus {
   width: 100%;
 }
 
+button:hover {
+  background-color: $hover;
+  color: $light-color;
+}
+
 .list-footer {
   margin: 20px auto;
   width: 450px;
 }
 
-button:hover {
-  background-color: #045e55;
-  color: #ffffff;
-}
-
 .save-button:disabled {
   background-color: #D0D2D3;
 }
-
-// .show-all-button {
-//   width: 450px;
-// }
 
 .tag-bar {
   display: flex;
@@ -125,16 +118,16 @@ button:hover {
 }
 
 .sort-button {
-  color: #00a79d;
+  color: $dark-accent-color;
 }
 
 .sort-button:hover {
-  color: #045e55;
+  color: $hover;
 }
 
 .sort-button[disabled],
 .sort-button[disabled]:hover {
-  color: #D0D2D3;
+  color: $hover;
 }
 
 .layout-flex-wrap {
@@ -162,11 +155,10 @@ button:hover {
 }
 
 .card {
-  // border-radius: 10px;
-  border-bottom: solid 2px #d1d3d4;
-  width: 450px;
+  border-bottom: solid 2px $dark-text;
   margin: 10px auto;
   padding: 12px;
+  width: 450px;
 }
 
 .complete {
@@ -174,7 +166,7 @@ button:hover {
 }
 
 .card-title {
-  color: #6d6e71;
+  color: $dark-text;
   display: inline-block;
   margin: 0;
 }
@@ -198,7 +190,7 @@ button:hover {
 }
 
 .card-task {
-  color: #939598;
+  color: $dark-text;
 }
 
 .upvote, .downvote {
@@ -224,9 +216,6 @@ button:hover {
 .downvote:hover {
   background-image: url("/images/downvote-hover.svg");
 }
-
-
-
 
 .card-importance {
   color: #6d6e71;
@@ -261,7 +250,7 @@ button:hover {
   list-style-type: none;
   /*flex-wrap: wrap;*/
   align-content: stretch;
-  color: #939598;
+  color: black;
 }
 
 .delete-tag {
@@ -297,7 +286,7 @@ button:hover {
   cursor: pointer;
   filter: opacity(90%);
   color: white;
-  background-color: #00a79d;
+  background-color: $hover;
 }
 
 @media screen and (max-width: 500px){
