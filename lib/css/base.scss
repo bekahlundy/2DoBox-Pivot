@@ -8,7 +8,7 @@ body {
 }
 
 .top-section {
-  background-color: $background-color;
+  background-color: $main-color;
  }
 
 .title {
@@ -18,7 +18,7 @@ body {
   margin: 0 auto;
   padding: 20px 0;
   width: 100%;
-  color: $dark-accent-button-color
+  color: $hover-button-color;
 }
 
 .form-section {
@@ -32,6 +32,10 @@ body {
 
 .text-input {
   height: 30px;
+}
+
+.char-counter {
+  text-align:right;
 }
 
 .task-field {
@@ -57,8 +61,8 @@ input:focus, button:focus {
 }
 
 .save-button, .show-all-button, .complete-button, .show-complete-button, .show-more-button {
-  background-color: $dark-accent-button-color;
-  color: $button-text-color;
+  background-color: $main-color;
+  color: $dark-text-card-color;
   border: none;
   height: 35px;
 
@@ -78,7 +82,7 @@ input:focus, button:focus {
 
   &:hover {
     background-color: $hover-button-color;
-    color: $button-text-color;
+    color: $dark-text-card-color;
   }
 }
 
@@ -104,7 +108,7 @@ input:focus, button:focus {
 }
 
 .sort-button {
-  color: $dark-accent-button-color;
+  color: $main-color;
 
   &:hover {
     color: $hover-button-color;
@@ -141,7 +145,13 @@ input:focus, button:focus {
 }
 
 .complete {
-  background-color: $light-text-color;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2) 10px,
+    rgba(0, 0, 0, 0.1) 10px,
+    rgba(0, 0, 0, 0.1) 20px
+  ),;
 }
 
 .card-title {
@@ -213,7 +223,7 @@ input:focus, button:focus {
 }
 
 .tag-bar  {
-  border: solid 1px $background-color;
+  border: solid 1px $main-color;
   width: 100%;
 }
 
