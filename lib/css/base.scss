@@ -100,8 +100,9 @@ input:focus, button:focus {
   width: 450px;
 }
 
-.save-button:disabled {
+.save-button:disabled, .save-button[disabled]:hover {
   background-color: $light-text-color;
+  color: $dark-text-card-color;
 }
 
 .tag-bar, .display-menu {
