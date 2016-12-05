@@ -5,13 +5,13 @@ const test      = require('selenium-webdriver/testing');
 test.describe('adding and removing cards', function() {
   let driver;
 
-  test.beforeEach( () => {
+  test.beforeEach( function() {
     this.timeout(10000);
     driver = new webdriver.Builder().forBrowser('chrome').build();
     driver.get('http://localhost:8080');
   });
 
-  test.afterEach( () => {
+  test.afterEach( function() {
     driver.quit();
   });
 
@@ -36,7 +36,7 @@ test.describe('adding and removing cards', function() {
 
     driver.findElement({ tagName: 'article' }).then(card =>
       card.getText()).then((text =>
-        assert.equal(text, 'this is a title\nthis is a task body\nImportance: Normal complete')));
+        assert.equal(text, 'this is a title\nthis is a task body\nImportance: Normal\ncomplete')));
   });
 
   test.it('should allow user to add multiple cards', function() {
@@ -52,9 +52,7 @@ test.describe('adding and removing cards', function() {
     task.sendKeys('this is a task body 2');
     saveButton.click();
 
-    driver.findElements({tagName: 'article'}).then((cards) =>{
-      assert.equal(cards.length, 2);
-    });
+    driver.findElements({tagName: 'article'}).then(cards => assert.equal(cards.length, 2));
 
   });
 
@@ -71,20 +69,13 @@ test.describe('adding and removing cards', function() {
     task.sendKeys('this is a task body 2');
     saveButton.click();
 
-    driver.findElements({tagName: 'article'}).then((cards) =>{
-      assert.equal(cards.length, 2);
-    });
+    driver.findElements({tagName: 'article'}).then(cards => assert.equal(cards.length, 2));
 
     driver.findElement({className: 'delete'}).click();
 
-    driver.wait(function() {
-      return driver.findElements({ tagName: 'article' }).then(function(cards) {
-        return cards.length === 1;
-      });
-    }, 1000);
+    driver.wait( () => driver.findElements({ tagName: 'article' }).then( cards => cards.length === 1), 2000);
 
-    driver.findElements({tagName:'article'}).then((cards) => {
-      assert.equal(cards.length, 1);
-    });
+    driver.findElements({tagName:'article'}).then(cards => assert.equal(cards.length, 1));
+    
   });
 });
