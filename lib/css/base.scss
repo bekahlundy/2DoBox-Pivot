@@ -18,7 +18,7 @@ body {
   margin: 0 auto;
   padding: 20px 0;
   width: 100%;
-  color: $dark-accent-button-color
+  color: $hover-button-color;
 }
 
 .form-section {
@@ -32,6 +32,10 @@ body {
 
 .text-input {
   height: 30px;
+}
+
+.char-counter {
+  text-align:right;
 }
 
 .task-field {
@@ -56,14 +60,16 @@ input:focus, button:focus {
   filter: opacity(80%);
 }
 
-.save-button, .show-all-button, .complete-button, .show-complete-button, .show-more-button {
-  background-color: $dark-accent-button-color;
-  color: $button-text-color;
+.btn {
+  display: inline-block;
+  background-color: $main-color;
+  color: $dark-text-card-color;
   border: none;
   height: 35px;
 
   &:hover {
     background-color: $hover-button-color;
+    color: $button-hover-text-color;
   }
 }
 
@@ -78,10 +84,16 @@ input:focus, button:focus {
 
   &:hover {
     background-color: $hover-button-color;
-    color: $button-text-color;
+    color: $button-hover-text-color;
   }
 }
 
+.importance-filter-bar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
 .list-footer {
   margin: 20px auto;
@@ -104,10 +116,11 @@ input:focus, button:focus {
 }
 
 .sort-button {
-  color: $dark-accent-button-color;
+  color: $main-color;
 
   &:hover {
     color: $hover-button-color;
+
   }
 }
 
@@ -141,7 +154,7 @@ input:focus, button:focus {
 }
 
 .complete {
-  background-color: $light-text-color;
+  background: $light-text-color;
 }
 
 .card-title {
@@ -194,7 +207,7 @@ input:focus, button:focus {
 }
 
 .card-importance {
-  color: #6d6e71;
+  color: $dark-text-card-color;
   display: inline-block;
   height: 25px;
   vertical-align: middle;
@@ -213,7 +226,7 @@ input:focus, button:focus {
 }
 
 .tag-bar  {
-  border: solid 1px $background-color;
+  border: solid 1px $main-color;
   width: 100%;
 }
 
@@ -228,7 +241,7 @@ input:focus, button:focus {
   &:hover {
     cursor: pointer;
     filter: opacity(90%);
-    color: $light-text-color;
+    color: $button-hover-text-color;
     background-color: $hover-button-color;
   }
 }
