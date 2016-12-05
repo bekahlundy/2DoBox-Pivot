@@ -121,7 +121,6 @@ input:focus, button:focus {
 
   &:hover {
     color: $hover-button-color;
-
   }
 }
 
@@ -247,7 +246,7 @@ input:focus, button:focus {
   }
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 500px) {
   .task-field {
     height: 60px;
   }
