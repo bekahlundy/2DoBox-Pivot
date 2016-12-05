@@ -20,30 +20,37 @@
         <input class="text-input form-item tag-field" type="text" name="Tags" aria-label="Tags" placeholder="Tags">
         <section class="char-counter tag-char-counter">0</section>
         <!-- <p class="form-item error-msg">Input field(s) are blank!</p> -->
-        <button class="save-button form-item" type="button" name="save-button" disabled>save
+        <button class="btn save-button form-item" type="button" name="save-button" disabled>save
         </button>
       </section>
     </section>
 
     <section class="bottom-section">
       <section class="display-menu">
-        <div class="search-bar-container">
+        <section class="search-bar-container">
           <input class="text-input search-bar" type="text" name="Search" aria-label="Search" placeholder="Search">
           <i class="sort-button fa fa-sort-desc fa-3x" aria-hidden="true" role="button" tabindex="0">
           </i>
-        </div>
+        </section>
+        <section class="importance-filter-bar">
+          <button class="btn importance-button non-button" type="button" name="none-button">None</button>
+          <button class="btn importance-button low-button" type="button" name="low-button">Low</button>
+          <button class="btn importance-button normal-button" type="button" name="normal-button">Normal</button>
+          <button class="btn importance-button high-button" type="button" name="high-button">High</button>
+          <button class="btn importance-button critical-button" type="button" name="critical-button">Critical</button>
+        </section>
         <ul class="layout-flex-wrap tag-bar">
         </ul>
-        <button class="show-complete-button form-item" type="button" name="show-complete-button">Show Completed Tasks
+        <button class="btn show-complete-button form-item" type="button" name="show-complete-button">Show Completed Tasks
         </button>
-        <button class="show-all-button form-item" type="button" name="show-all-button">Show All
+        <button class="btn show-all-button form-item" type="button" name="show-all-button">Show All
         </button>
       </section>
 
       <section class="todo-list">
       </section>
       <section class="list-footer">
-        <button class="show-more-button" type="button" name="show-more-button">Show More
+        <button class="btn show-more-button" type="button" name="show-more-button">Show More
         </button>
       </section>
     </section>
