@@ -80,7 +80,7 @@ input:focus, button:focus {
 .complete-button {
   font-size: 13px;
   height: 25px;
-  margin-left: 140px;
+  float:right;
 
   &:hover {
     background-color: $hover-button-color;
@@ -100,8 +100,9 @@ input:focus, button:focus {
   width: 450px;
 }
 
-.save-button:disabled {
+.save-button:disabled, .save-button[disabled]:hover {
   background-color: $light-text-color;
+  color: $dark-text-card-color;
 }
 
 .tag-bar, .display-menu {
@@ -260,8 +261,4 @@ input:focus, button:focus {
   .card {
     width: 85%;
   }
-}
-
-.complete-button {
-  margin-left: 80px;
 }
