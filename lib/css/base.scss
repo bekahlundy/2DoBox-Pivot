@@ -1,14 +1,9 @@
+@import "variables";
 @import "node_modules/normalize-scss/sass/normalize";
 @include normalize();
 
-$light-color: #ffffff;
-$dark-text: #000000;
-$background-color: #c4e9f2;
-$dark-accent-color: #107895;
-$hover: #2c464c;
-
 body {
-  font-family: 'Roboto Slab', serif;
+  font-family: $base-font;
   margin-top: 0;
 }
 
@@ -23,7 +18,7 @@ body {
   margin: 0 auto;
   padding: 20px 0;
   width: 100%;
-  color: $dark-accent-color
+  color: $dark-accent-button-color
 }
 
 .form-section {
@@ -40,11 +35,11 @@ body {
 }
 
 .task-field {
-  outline: none;
-  resize: none;
-  border: solid 1px #D0D2D3;
-  padding-top: 5px;
+  border: solid 1px $light-text-color;
   height: 25px;
+  outline: none;
+  padding-top: 5px;
+  resize: none;
 }
 
 .form-item {
@@ -52,20 +47,8 @@ body {
   padding-left: 5px;
 }
 
-::-webkit-input-placeholder {
-  color: #D0D2D3;
-}
-
-::-moz-placeholder {
-  color: #D0D2D3;
-}
-
-:-ms-input-placeholder {
-  color: #D0D2D3;
-}
-
-:-moz-placeholder {
-  color: #D0D2D3;
+::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, :-moz-placeholder {
+  color: $light-text-color;
 }
 
 input:focus, button:focus {
@@ -73,16 +56,15 @@ input:focus, button:focus {
   filter: opacity(80%);
 }
 
-button:focus {
-  outline: 0;
-  filter: opacity(80%);
-}
-
 .save-button, .show-all-button, .complete-button, .show-complete-button, .show-more-button {
-  background-color: $dark-accent-color;
-  color: $light-color;
+  background-color: $dark-accent-button-color;
+  color: $button-text-color;
   border: none;
   height: 35px;
+
+  &:hover {
+    background-color: $hover-button-color;
+  }
 }
 
 .save-button, .show-all-button, .show-complete-button, .show-more-button, .search-bar {
@@ -95,8 +77,8 @@ button:focus {
   margin-left: 140px;
 
   &:hover {
-    background-color: $hover;
-    color: $light-color;
+    background-color: $hover-button-color;
+    color: $button-text-color;
   }
 }
 
@@ -107,7 +89,7 @@ button:focus {
 }
 
 .save-button:disabled {
-  background-color: #D0D2D3;
+  background-color: $light-text-color;
 }
 
 .tag-bar, .display-menu {
@@ -122,10 +104,10 @@ button:focus {
 }
 
 .sort-button {
-  color: $dark-accent-color;
+  color: $dark-accent-button-color;
 
   &:hover {
-    color: $hover;
+    color: $hover-button-color;
   }
 }
 
@@ -152,18 +134,18 @@ button:focus {
 }
 
 .card {
-  border-bottom: solid 2px $dark-text;
+  border-bottom: solid 2px $dark-text-card-color;
   margin: 10px auto;
   padding: 12px;
   width: 450px;
 }
 
 .complete {
-  background-color: #EEEEEE;
+  background-color: $light-text-color;
 }
 
 .card-title {
-  color: $dark-text;
+  color: $dark-text-card-color;
   display: inline-block;
   margin: 0;
 }
@@ -187,7 +169,7 @@ button:focus {
 }
 
 .card-task {
-  color: $dark-text;
+  color: $dark-text-card-color;
 }
 
 .upvote, .downvote {
@@ -195,23 +177,20 @@ button:focus {
   margin-right: 15px;
 }
 
-.upvote,
-.upvote[disabled]:hover {
+.upvote {
   background-image: url("/images/upvote.svg");
+
+  &:hover {
+    background-image: url("/images/upvote-hover.svg");
+  }
 }
 
-.upvote:hover {
-  background-image: url("/images/upvote-hover.svg");
-}
-
-
-.downvote,
-.downvote[disabled]:hover {
+.downvote, {
   background-image: url("/images/downvote.svg");
-}
 
-.downvote:hover {
-  background-image: url("/images/downvote-hover.svg");
+  &:hover {
+    background-image: url("/images/downvote-hover.svg");
+  }
 }
 
 .card-importance {
@@ -222,68 +201,36 @@ button:focus {
   padding-bottom: 5px;
 }
 
-// .error-msg {
-//   opacity: 0;
-//   font-size: 14px;
-//   width: 90%;
-//   text-align: center;
-//   padding: 5px 0;
-//   margin: 0 auto;
-//   border-radius: 5px;
-// }
-
-// .card-tags-section {
-//   // margin-left: 0;
-// }
-
 .card-tags, .tag-bar {
   margin-left: 0;
-  // margin-right: 0;
-  // -webkit-margin-before: 0;
   -webkit-padding-start: 0;
   width: auto;
   display: flex;
   justify-content: space-between;
   list-style-type: none;
-  /*flex-wrap: wrap;*/
   align-content: stretch;
-  color: black;
+  color: $dark-text-card-color;
 }
-
-.delete-tag {
-  color: #D1D3D4;
-  margin-right: 5px;
-  display: inline;
-
-  &:hover {
-    color: #EF4136;
-  }
-}
-
 
 .tag-bar  {
-  border: solid 1px #e5f3f2;
+  border: solid 1px $background-color;
   width: 100%;
 }
 
 .card-tags li,
 .tag-bar li {
-  // margin: 8px 0 8px 0;
   padding: 8px 0;
   width: 20%;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  // align-items: center;
-  /*margin: 0 10px;*/
-}
 
-
-.tag-bar li:hover {
-  cursor: pointer;
-  filter: opacity(90%);
-  color: white;
-  background-color: $hover;
+  &:hover {
+    cursor: pointer;
+    filter: opacity(90%);
+    color: $light-text-color;
+    background-color: $hover-button-color;
+  }
 }
 
 @media screen and (max-width: 500px){
@@ -300,4 +247,8 @@ button:focus {
   .card {
     width: 85%;
   }
+}
+
+.complete-button {
+  margin-left: 80px;
 }
