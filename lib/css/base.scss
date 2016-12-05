@@ -8,7 +8,7 @@ body {
 }
 
 .top-section {
-  background-color: $main-color;
+  background-color: #fffbcc;
  }
 
 .title {
@@ -207,7 +207,7 @@ input:focus, button:focus {
 }
 
 .card-importance {
-  color: #6d6e71;
+  color: $dark-text-card-color;
   display: inline-block;
   height: 25px;
   vertical-align: middle;
