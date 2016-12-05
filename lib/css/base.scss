@@ -56,7 +56,8 @@ input:focus, button:focus {
   filter: opacity(80%);
 }
 
-.save-button, .show-all-button, .complete-button, .show-complete-button, .show-more-button {
+.btn {
+  display: inline-block;
   background-color: $dark-accent-button-color;
   color: $button-text-color;
   border: none;
@@ -82,6 +83,12 @@ input:focus, button:focus {
   }
 }
 
+.importance-filter-bar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
 .list-footer {
   margin: 20px auto;
