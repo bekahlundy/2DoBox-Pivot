@@ -80,7 +80,7 @@ input:focus, button:focus {
 .complete-button {
   font-size: 13px;
   height: 25px;
-  margin-left: 140px;
+  float:right;
 
   &:hover {
     background-color: $hover-button-color;
@@ -260,8 +260,4 @@ input:focus, button:focus {
   .card {
     width: 85%;
   }
-}
-
-.complete-button {
-  margin-left: 80px;
 }
