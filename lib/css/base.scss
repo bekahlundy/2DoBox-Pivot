@@ -89,10 +89,17 @@ button:focus {
   width: 100%;
 }
 
-button:hover {
-  background-color: $hover;
-  color: $light-color;
+.complete-button {
+  font-size: 13px;
+  height: 25px;
+  margin-left: 140px;
+
+  &:hover {
+    background-color: $hover;
+    color: $light-color;
+  }
 }
+
 
 .list-footer {
   margin: 20px auto;
@@ -116,15 +123,10 @@ button:hover {
 
 .sort-button {
   color: $dark-accent-color;
-}
 
-.sort-button:hover {
-  color: $hover;
-}
-
-.sort-button[disabled],
-.sort-button[disabled]:hover {
-  color: $hover;
+  &:hover {
+    color: $hover;
+  }
 }
 
 .layout-flex-wrap {
@@ -178,10 +180,10 @@ button:hover {
   background-image: url("/images/delete.svg");
   display: inline-block;
   float: right;
-}
 
-.delete:hover {
-  background-image: url("/images/delete-hover.svg");
+  &:hover {
+    background-image: url("/images/delete-hover.svg");
+  }
 }
 
 .card-task {
@@ -252,12 +254,12 @@ button:hover {
   color: #D1D3D4;
   margin-right: 5px;
   display: inline;
+
+  &:hover {
+    color: #EF4136;
+  }
 }
 
-.delete-tag:hover {
-  color: #EF4136;
-  /*filter: invert(100%);*/
-}
 
 .tag-bar  {
   border: solid 1px #e5f3f2;
